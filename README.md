@@ -11,7 +11,9 @@ installation is compatible by executing `git status --branch --porcelain=v2` ins
 
 
 ## Installation
-Clone this repo or download the git-prompt.zsh file. Then add following lines to your `.zshrc`.
+Clone this repo or [download](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) the
+`git-prompt.zsh` file. Then add following lines to your `.zshrc`.
+
 ```
 prompt off  # Optional in some cases
 source path/to/git-prompt.zsh
@@ -38,4 +40,11 @@ The structure of the prompt is the following:
     * `●n`: there are `n` staged files
     * `✚n`: there are `n` unstaged and changed files
     * `…n`: there are `n` untracked files
+
+
+## Features / Non-Features
+* A pure shell implementation using awk; no Python, no Haskell required
+* Fast; git command is called only once
+* (Currently) no customization via environment variables. To customize the prompt you will have to edit the
+    `git-prompt.zsh` file.
 
