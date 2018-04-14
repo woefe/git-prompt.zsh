@@ -1,6 +1,6 @@
 # Informative Git Prompt for Zsh
 
-![screenshot](./screenshot.png)
+<img src="screenshot.png" width="400" />
 
 A lightweight and fast Git prompt for Zsh heavily inspired by Olivier Verdier's
 [zsh-git-prompt](https://github.com/olivierverdier/zsh-git-prompt) and very similar to the "Informative VCS" prompt of
