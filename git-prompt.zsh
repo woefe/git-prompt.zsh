@@ -22,14 +22,19 @@
 
 setopt PROMPT_SUBST
 
+ZSH_THEME_GIT_PROMPT_BRANCH=${ZSH_THEME_GIT_PROMPT_BRANCH:-%F{magenta}%B}
+ZSH_THEME_GIT_PROMPT_STAGED=${ZSH_THEME_GIT_PROMPT_STAGED:-%F{red}}
+ZSH_THEME_GIT_PROMPT_CHANGED=${ZSH_THEME_GIT_PROMPT_CHANGED:-%F{red}}
+ZSH_THEME_GIT_PROMPT_CONFLICTS=${ZSH_THEME_GIT_PROMPT_CONFLICTS:-%F{blue}}
+
 function gitprompt() {
     git status --branch --porcelain=v2 2>&1 | awk '
         BEGIN {
-            RED = "%F{red}";
-            MAGENTA = "%F{magenta}";
+            ZSH_THEME_GIT_PROMPT_STAGED = "'"$ZSH_THEME_GIT_PROMPT_STAGED"'";
+            ZSH_THEME_GIT_PROMPT_BRANCH = "'"$ZSH_THEME_GIT_PROMPT_BRANCH"'";
+            ZSH_THEME_GIT_PROMPT_CHANGED = "'"$ZSH_THEME_GIT_PROMPT_CHANGED"'";
+            ZSH_THEME_GIT_PROMPT_CONFLICTS = "'"$ZSH_THEME_GIT_PROMPT_CONFLICTS"'";
             GREEN = "%F{green}";
-            BLUE = "%F{blue}";
-            BOLD = "%B";
             NB = "%b";
             NC = "%f";
 
@@ -86,8 +91,7 @@ function gitprompt() {
 
             printf "[";
 
-            printf "%s", MAGENTA
-            printf "%s", BOLD
+            printf "%s", ZSH_THEME_GIT_PROMPT_BRANCH
             if (head == "(detached)") {
                 printf ":%s", substr(oid, 0, 7);
             } else {
@@ -107,25 +111,27 @@ function gitprompt() {
             printf "|";
 
             if (unmerged > 0) {
-                printf "%s", RED
+                printf "%s", ZSH_THEME_GIT_PROMPT_CONFLICTS
                 printf "✖%d", unmerged;
                 printf "%s", NC
             }
 
             if (staged > 0) {
-                printf "%s", RED
+                printf "%s", ZSH_THEME_GIT_PROMPT_STAGED
                 printf "●%d", staged;
                 printf "%s", NC
             }
 
             if (unstaged > 0) {
-                printf "%s", BLUE
+                printf "%s", ZSH_THEME_GIT_PROMPT_CHANGED
                 printf "✚%d", unstaged;
                 printf "%s", NC
             }
 
             if (untracked > 0) {
+                printf "%s", ZSH_THEME_GIT_PROMPT_CHANGED
                 printf "…%d", untracked;
+                printf "%s", NC
             }
 
             if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
