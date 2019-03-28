@@ -1,5 +1,5 @@
-# zsh-git-prompt a lightweight git prompt for zsh.
-# Copyright © 2018 Wolfgang Popp
+# git-prompt.zsh -- a lightweight git prompt for zsh.
+# Copyright © 2019 Wolfgang Popp
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,6 @@ setopt PROMPT_SUBST
 autoload -U colors
 colors
 
-
 : "${ZSH_THEME_GIT_PROMPT_PREFIX:="["}"
 : "${ZSH_THEME_GIT_PROMPT_SUFFIX:="] "}"
 : "${ZSH_THEME_GIT_PROMPT_SEPARATOR:="|"}"
@@ -36,9 +35,21 @@ colors
 : "${ZSH_THEME_GIT_PROMPT_UNTRACKED:="…"}"
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
 
+_ZSH_GIT_PROMPT_IS_GIT_DIR=false
+function _zsh_git_prompt_chpwd_hook() {
+    if git status > /dev/null 2>&1; then
+        _ZSH_GIT_PROMPT_IS_GIT_DIR=true
+    else
+        _ZSH_GIT_PROMPT_IS_GIT_DIR=false
+    fi
+}
+
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _zsh_git_prompt_chpwd_hook
+_zsh_git_prompt_chpwd_hook
 
 function gitprompt() {
-    git status --branch --porcelain=v2 2>&1 | awk \
+    $_ZSH_GIT_PROMPT_IS_GIT_DIR && git status --branch --porcelain=v2 2>&1 | awk \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
@@ -107,6 +118,7 @@ function gitprompt() {
                 }
 
                 print PREFIX;
+                print RC;
 
                 print BRANCH;
                 if (head == "(detached)") {
@@ -123,7 +135,7 @@ function gitprompt() {
                 }
 
                 if (ahead > 0) {
-                    print AHEAD
+                    print AHEAD;
                     printf "%d", ahead;
                     print RC;
                 }
@@ -160,6 +172,7 @@ function gitprompt() {
                 }
 
                 print SUFFIX;
+                print RC;
             }
         '
 }
