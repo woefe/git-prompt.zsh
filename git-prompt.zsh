@@ -26,6 +26,7 @@ colors
 : "${ZSH_THEME_GIT_PROMPT_PREFIX:="["}"
 : "${ZSH_THEME_GIT_PROMPT_SUFFIX:="] "}"
 : "${ZSH_THEME_GIT_PROMPT_SEPARATOR:="|"}"
+: "${ZSH_THEME_GIT_PROMPT_DETACHED:="%{$fg_bold[cyan]%}:"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH:="%{$fg_bold[magenta]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_BEHIND:="↓"}"
 : "${ZSH_THEME_GIT_PROMPT_AHEAD:="↑"}"
@@ -53,6 +54,7 @@ function gitprompt() {
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
+        -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
         -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
         -v BEHIND="$ZSH_THEME_GIT_PROMPT_BEHIND" \
         -v AHEAD="$ZSH_THEME_GIT_PROMPT_AHEAD" \
@@ -120,10 +122,11 @@ function gitprompt() {
                 print PREFIX;
                 print RC;
 
-                print BRANCH;
                 if (head == "(detached)") {
+                    print DETACHED;
                     print substr(oid, 0, 7);
                 } else {
+                    print BRANCH;
                     print head;
                 }
                 print RC;
