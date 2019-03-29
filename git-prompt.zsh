@@ -36,8 +36,8 @@ colors
 : "${ZSH_THEME_GIT_PROMPT_UNTRACKED:="…"}"
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
 
-_ZSH_GIT_PROMPT_IS_GIT_DIR=false
-function _zsh_git_prompt_chpwd_hook() {
+
+function _zsh_git_prompt_check_git_dir() {
     if git status > /dev/null 2>&1; then
         _ZSH_GIT_PROMPT_IS_GIT_DIR=true
     else
@@ -45,9 +45,31 @@ function _zsh_git_prompt_chpwd_hook() {
     fi
 }
 
+function _zsh_git_prompt_chpwd_hook() {
+    _zsh_git_prompt_check_git_dir
+}
+
+function _zsh_git_prompt_preexec_hook() {
+    case "$2" in
+        git*|hub*|gh*|stg*|tig*)
+        _ZSH_GIT_PROMPT_OUT_OF_SYNC=1
+        ;;
+    esac
+}
+
+function _zsh_git_prompt_precmd_hook() {
+    if [ -n "$_ZSH_GIT_PROMPT_OUT_OF_SYNC" ]; then
+        _zsh_git_prompt_check_git_dir
+        unset _ZSH_GIT_PROMPT_OUT_OF_SYNC
+    fi
+}
+
 autoload -U add-zsh-hook
 add-zsh-hook chpwd _zsh_git_prompt_chpwd_hook
-_zsh_git_prompt_chpwd_hook
+add-zsh-hook preexec _zsh_git_prompt_preexec_hook
+add-zsh-hook precmd _zsh_git_prompt_precmd_hook
+_zsh_git_prompt_check_git_dir
+
 
 function gitprompt() {
     $_ZSH_GIT_PROMPT_IS_GIT_DIR && git status --branch --porcelain=v2 2>&1 | awk \
