@@ -39,9 +39,9 @@ colors
 
 function _zsh_git_prompt_check_git_dir() {
     if git status > /dev/null 2>&1; then
-        _ZSH_GIT_PROMPT_IS_GIT_DIR=true
+        _ZSH_GIT_PROMPT_IS_GIT_DIR=1
     else
-        _ZSH_GIT_PROMPT_IS_GIT_DIR=false
+        unset _ZSH_GIT_PROMPT_IS_GIT_DIR
     fi
 }
 
@@ -58,7 +58,7 @@ function _zsh_git_prompt_preexec_hook() {
 }
 
 function _zsh_git_prompt_precmd_hook() {
-    if [ -n "$_ZSH_GIT_PROMPT_OUT_OF_SYNC" ]; then
+    if [[ -n "$_ZSH_GIT_PROMPT_OUT_OF_SYNC" ]]; then
         _zsh_git_prompt_check_git_dir
         unset _ZSH_GIT_PROMPT_OUT_OF_SYNC
     fi
@@ -72,7 +72,7 @@ _zsh_git_prompt_check_git_dir
 
 
 function gitprompt() {
-    $_ZSH_GIT_PROMPT_IS_GIT_DIR && git status --branch --porcelain=v2 2>&1 | awk \
+    [[ -n "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]] && git status --branch --porcelain=v2 2>&1 | awk \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
