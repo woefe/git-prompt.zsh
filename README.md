@@ -40,6 +40,8 @@ The structure of the prompt is the following:
 
 
 ## Customization
+
+### Appearance
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
 Take a look at the beginning of the [git-prompt.zsh](./git-prompt.zsh) file to see which variables are available and what their defaults are.
 Note that some of them are named differently than in the original Git prompt by Olivier Verdier.
@@ -47,6 +49,14 @@ You can play around with different settings without reloading your shell.
 The Git prompt will automatically pick up your changes to the `ZSH_THEME_GIT_PROMPT_` variables.
 But remember to save them in your `.zshrc` after you tweaked them to your liking!
 
+### Show number of stash entries
+The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
+Enabling this will execute a second Git command every time a new prompt is shown!
+To enable stash entries add the following line to your `.zshrc`:
+
+```bash
+ZSH_GIT_PROMPT_SHOW_STASH=1
+```
 
 ## Features / Non-Features
 * A pure shell implementation using awk; no Python, no Haskell required
@@ -55,4 +65,4 @@ But remember to save them in your `.zshrc` after you tweaked them to your liking
 
 ## Known issues
 * If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the prompt will not be shown.
-    Executing `git status` or any other command will fix the issue.
+    Executing `git status` or any other Git command will fix the issue.

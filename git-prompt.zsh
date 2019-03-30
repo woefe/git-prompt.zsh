@@ -34,6 +34,7 @@ colors
 : "${ZSH_THEME_GIT_PROMPT_STAGED:="%{$fg[green]%}●"}"
 : "${ZSH_THEME_GIT_PROMPT_UNSTAGED:="%{$fg[red]%}✚"}"
 : "${ZSH_THEME_GIT_PROMPT_UNTRACKED:="…"}"
+: "${ZSH_THEME_GIT_PROMPT_STASHED:="%{$fg[blue]%}⚑"}"
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
 
 
@@ -82,7 +83,17 @@ _zsh_git_prompt_check_git_dir
 
 
 function gitprompt() {
-    [[ -n "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]] && git status --branch --porcelain=v2 2>&1 | awk \
+    if [[ -z "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]]; then
+        return
+    fi
+
+    (
+        [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
+            c=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+            [[ -n "$c" ]] && echo "# stash.count $c"
+        )
+        git status --branch --porcelain=v2 2>&1
+    ) | awk \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
@@ -94,6 +105,7 @@ function gitprompt() {
         -v STAGED="$ZSH_THEME_GIT_PROMPT_STAGED" \
         -v UNSTAGED="$ZSH_THEME_GIT_PROMPT_UNSTAGED" \
         -v UNTRACKED="$ZSH_THEME_GIT_PROMPT_UNTRACKED" \
+        -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
         -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
         -v RC="%{$reset_color%}" \
         '
@@ -109,6 +121,7 @@ function gitprompt() {
                 unmerged = 0;
                 staged = 0;
                 unstaged = 0;
+                stashed = 0;
             }
 
             $1 == "fatal:" {
@@ -144,6 +157,10 @@ function gitprompt() {
                 if (arr[2] != ".") {
                     ++unstaged;
                 }
+            }
+
+            $2 == "stash.count" {
+                stashed = $3;
             }
 
             END {
@@ -198,6 +215,12 @@ function gitprompt() {
                 if (untracked > 0) {
                     print UNTRACKED;
                     print untracked;
+                    print RC;
+                }
+
+                if (stashed > 0) {
+                    print STASHED;
+                    print stashed;
                     print RC;
                 }
 
