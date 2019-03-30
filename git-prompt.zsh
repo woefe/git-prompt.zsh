@@ -50,10 +50,20 @@ function _zsh_git_prompt_chpwd_hook() {
 }
 
 function _zsh_git_prompt_preexec_hook() {
+    # Tell precmd hook to check if we are in a git repo, only if we are not currently in a git repo
+    # and only if a new repo might have been created (using various commands).
     case "$2" in
         git*|hub*|gh*|stg*|tig*)
-        _ZSH_GIT_PROMPT_OUT_OF_SYNC=1
-        ;;
+            [[ -z "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]] && _ZSH_GIT_PROMPT_OUT_OF_SYNC=1
+            ;;
+    esac
+
+    # Tell precmd hook to check if we are in a git repo, only if we are currently in a git repo and
+    # only if the .git folder might have been modified.
+    case "$3" in
+        *.git*)
+            [[ -n "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]] && _ZSH_GIT_PROMPT_OUT_OF_SYNC=1
+            ;;
     esac
 }
 
