@@ -50,5 +50,9 @@ But remember to save them in your `.zshrc` after you tweaked them to your liking
 
 ## Features / Non-Features
 * A pure shell implementation using awk; no Python, no Haskell required
-* Fast; git command is called only once
+* Fast; Git command is invoked only once when a new prompt is shown in a Git repo (and at some other places to detect if you are currently within a Git repository)
+* No caching feature, because it breaks reliable detection of untracked files
 
+## Known issues
+* If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the prompt will not be shown.
+    Executing `git status` or any other command will fix the issue.
