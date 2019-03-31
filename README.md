@@ -1,11 +1,12 @@
-# Informative Git Prompt for Zsh
+# Informative Git prompt for Zsh
 
 <img src="screenshot.png" width="400" />
 
-A lightweight and fast Git prompt for Zsh heavily inspired by Olivier Verdier's [zsh-git-prompt](https://github.com/olivierverdier/zsh-git-prompt) and very similar to the "Informative VCS" prompt of fish shell.
+A fast, pure-shell, single-file Git prompt for Zsh.
+It is heavily inspired by Olivier Verdier's [zsh-git-prompt](https://github.com/olivierverdier/zsh-git-prompt) and very similar to the "Informative VCS" prompt of fish shell.
 
-This prompt requires Git with `--porcelain=v2` support, which is available since version 2.11.0. You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
-
+This prompt requires Git with `--porcelain=v2` support, which is available since version 2.11.0.
+You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
 
 ## Installation
 Clone this repo or [download](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) the `git-prompt.zsh` file.
@@ -37,6 +38,7 @@ The structure of the prompt is the following:
     * `●n`: there are `n` staged files
     * `✚n`: there are `n` unstaged and changed files
     * `…n`: there are `n` untracked files
+    * `⚑n`: there are `n` entries on the stash (disabled by default)
 
 
 ## Customization
@@ -59,10 +61,10 @@ ZSH_GIT_PROMPT_SHOW_STASH=1
 ```
 
 ## Features / Non-Features
-* A pure shell implementation using awk; no Python, no Haskell required
+* A pure shell implementation using [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html); no Python, no Haskell required
 * Fast; Git command is invoked only once when a new prompt is shown in a Git repo (and at some other places to detect if you are currently within a Git repository)
 * No caching feature, because it breaks reliable detection of untracked files
 
 ## Known issues
-* If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the prompt will not be shown.
+* If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the Git prompt will not be shown.
     Executing `git status` or any other Git command will fix the issue.
