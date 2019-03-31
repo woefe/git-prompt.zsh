@@ -70,58 +70,45 @@ ZSH_GIT_PROMPT_SHOW_STASH=1
 ## Known issues
 * If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the Git prompt will not be shown.
     Executing `git status` or any other Git command will fix the issue.
+* In large repositories the prompt might slow down, because Git has to find untracked files.
+    See `man git-status`, Section `--untracked-files` for possible options to speed things up.
 
 ## Benchmarks
-These benchmarks compare the performance of this prompt against the prompt maintained by **@starcraftman**, who forked the original by **@olivierverdier**, because it does not seem to be maintained anymore.
-In particular, we compare against the Python, not the Haskell version of the original prompt without caching enabled.
-The benchmarks measure the execution time of 100 invocations of the `gitprompt` function and `git_super_status` function respectively.
-Those functions are responsible for rendering the Git information in the prompt.
+These benchmarks compare the performance of this prompt against the prompts maintained by **@starcraftman** and **@Streetwalrus**.
+The prompt by **@starcraftman** is a fork of the original by **@olivierverdier**.
+We compare against the Python, not the Haskell version of the original prompt with caching disabled.
+The prompt by **@Streetwalrus** is an implementation in Rust.
+The benchmarks measure the execution time of 100 invocations of the `gitprompt` and `git_super_status` functions and `gitprompt-rs` command.
+Those functions and commands are responsible for rendering the Git information in the prompt.
 
-| configuration                                   | overhead for 100 prompts |
-|-------------------------------------------------|--------------------------|
-| woefe/git-prompt.zsh outside git repo           | 0.064s                   |
-| woefe/git-prompt.zsh inside git repo            | 0.493s                   |
-| woefe/git-prompt.zsh inside git repo with stash | 0.543s                   |
-| starcraftman/zsh-git-prompt outside git repo    | 3.044s                   |
-| starcraftman/zsh-git-prompt inside git repo     | 3.051s                   |
+| configuration                                                                                  | time for 100 prompts |
+|------------------------------------------------------------------------------------------------|----------------------|
+| [woefe/git-prompt.zsh](https://github.com/woefe/git-prompt.zsh) outside git repo               | 0.064s               |
+| [woefe/git-prompt.zsh](https://github.com/woefe/git-prompt.zsh) inside git repo                | 0.493s               |
+| [woefe/git-prompt.zsh](https://github.com/woefe/git-prompt.zsh) inside git repo with stash     | 0.543s               |
+| [starcraftman/zsh-git-prompt](https://github.com/starcraftman/zsh-git-prompt) outside git repo | 3.044s               |
+| [starcraftman/zsh-git-prompt](https://github.com/starcraftman/zsh-git-prompt) inside git repo  | 3.051s               |
+| [Streetwalrus/gitprompt-rs](https://github.com/Streetwalrus/gitprompt-rs) outside git repo     | 0.283s               |
+| [Streetwalrus/gitprompt-rs](https://github.com/Streetwalrus/gitprompt-rs) inside git repo      | 0.367s               |
 
-All benchmarks were executed on a Dell XPS 13 9370 laptop connected to wall power with an Intel Core i7-8550U, 16GB RAM, 512GB M.2 NVMe SSD.
+All benchmarks were executed on a Dell XPS 13 9370 laptop connected to wall power, with an Intel Core i7-8550U, 16GB RAM, 512GB M.2 NVMe SSD.
 The terminal emulator was [Alacritty](https://github.com/jwilm/alacritty).
+
+The [gitprompt-rs](https://github.com/Streetwalrus/gitprompt-rs) is the fastest inside git repos, but by default slower outside of git repos and also harder to customize.
+You will have to patch the Rust source and recompile it, if you want to customize it.
 
 ### Commands used for benchmarking
 
-1. woefe/git-prompt.zsh outside git repo
-    ```
-    > time zsh -c 'source ~/workspace/git-prompt.zsh/git-prompt.zsh; for i in $(seq 100); do print -P $(gitprompt); done'
-    zsh -c   0.04s user 0.03s system 113% cpu 0.064 total
-    ```
+```bash
+# woefe/git-prompt.zsh
+time zsh -c 'source ~/workspace/git-prompt.zsh/git-prompt.zsh; for i in $(seq 100); do print -P $(gitprompt); done'
 
-2. woefe/git-prompt.zsh inside git repo
-    ```
-    > time zsh -c 'source ~/workspace/git-prompt.zsh/git-prompt.zsh; for i in $(seq 100); do print -P $(gitprompt); done'
-    [master↑2|●1✚1…1]
-    ...
-    zsh -c   0.45s user 0.26s system 145% cpu 0.493 total
-    ```
+# woefe/git-prompt.zsh with stash
+time zsh -c 'source ~/workspace/git-prompt.zsh/git-prompt.zsh; ZSH_GIT_PROMPT_SHOW_STASH=1; for i in $(seq 100); do print -P $(gitprompt); done'
 
-3. woefe/git-prompt.zsh inside git repo with stash
-    ```
-    > time zsh -c 'source ~/workspace/git-prompt.zsh/git-prompt.zsh; ZSH_GIT_PROMPT_SHOW_STASH=1; for i in $(seq 100); do print -P $(gitprompt); done'
-    [master↑2|●1✚1…1⚑2]
-    ...
-    zsh -c   0.67s user 0.30s system 178% cpu 0.543 total
-    ```
+# starcraftman/zsh-git-prompt
+time zsh -c 'source /tmp/starcraftman/zsh-git-prompt/zshrc.sh; for i in $(seq 100); do print -P $(git_super_status); done'
 
-4. starcraftman/zsh-git-prompt outside git repo
-    ```
-    > time zsh -c 'source /tmp/starcraftman/zsh-git-prompt/zshrc.sh; for i in $(seq 100); do print -P $(git_super_status); done'
-    zsh -c   2.65s user 0.54s system 104% cpu 3.044 total
-    ```
-
-5. starcraftman/zsh-git-prompt outside git repo
-    ```
-    > time zsh -c 'source /tmp/starcraftman/zsh-git-prompt/zshrc.sh; for i in $(seq 100); do print -P $(git_super_status); done'
-    [master ↑·2|●1✚1…1⚑2]
-    ...
-    zsh -c   2.69s user 0.59s system 107% cpu 3.051 total
-    ```
+# Streetwalrus/gitprompt-rs (gitprompt-rs installed from Arch repo)
+time zsh -c 'for i in $(seq 100); do print -P $(gitprompt-rs); done'
+```
