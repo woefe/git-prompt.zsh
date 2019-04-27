@@ -20,8 +20,7 @@
 # OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 setopt PROMPT_SUBST
-autoload -U colors
-colors
+autoload -U colors && colors
 
 : "${ZSH_THEME_GIT_PROMPT_PREFIX:="["}"
 : "${ZSH_THEME_GIT_PROMPT_SUFFIX:="] "}"
@@ -38,57 +37,23 @@ colors
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
 
 
-function _zsh_git_prompt_check_git_dir() {
-    if git status > /dev/null 2>&1; then
-        _ZSH_GIT_PROMPT_IS_GIT_DIR=1
-    else
-        unset _ZSH_GIT_PROMPT_IS_GIT_DIR
+
+_ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+function _zsh_git_prompt_callback() {
+    local job="$1" code="$2" output="$3" exec_time="$4" next_pending="$6"
+    if [[ "$job" == "_zsh_git_prompt_git_status" ]]; then
+        _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+        (( code == 0 )) && _ZSH_GIT_PROMPT_STATUS_OUTPUT="$output"
+        zle reset-prompt
+        zle -R
     fi
 }
 
-function _zsh_git_prompt_chpwd_hook() {
-    _zsh_git_prompt_check_git_dir
-}
-
-function _zsh_git_prompt_preexec_hook() {
-    # Tell precmd hook to check if we are in a git repo, only if we are not currently in a git repo
-    # and only if a new repo might have been created (using various commands).
-    case "$2" in
-        git*|hub*|gh*|stg*|tig*)
-            [[ -z "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]] && _ZSH_GIT_PROMPT_OUT_OF_SYNC=1
-            ;;
-    esac
-
-    # Tell precmd hook to check if we are in a git repo, only if we are currently in a git repo and
-    # only if the .git folder might have been modified.
-    case "$3" in
-        *.git*)
-            [[ -n "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]] && _ZSH_GIT_PROMPT_OUT_OF_SYNC=1
-            ;;
-    esac
-}
-
-function _zsh_git_prompt_precmd_hook() {
-    if [[ -n "$_ZSH_GIT_PROMPT_OUT_OF_SYNC" ]]; then
-        _zsh_git_prompt_check_git_dir
-        unset _ZSH_GIT_PROMPT_OUT_OF_SYNC
-    fi
-}
-
-autoload -U add-zsh-hook
-add-zsh-hook chpwd _zsh_git_prompt_chpwd_hook
-add-zsh-hook preexec _zsh_git_prompt_preexec_hook
-add-zsh-hook precmd _zsh_git_prompt_precmd_hook
-_zsh_git_prompt_check_git_dir
-
-
-function gitprompt() {
-    if [[ -z "$_ZSH_GIT_PROMPT_IS_GIT_DIR" ]]; then
-        return
-    fi
-
+_zsh_git_prompt_git_status() {
+    local show_stash
+    show_stash="$1"
     (
-        [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
+        [[ -n "$show_stash" ]] && (
             c=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
             [[ -n "$c" ]] && echo "# stash.count $c"
         )
@@ -233,4 +198,29 @@ function gitprompt() {
                 print RC;
             }
         '
+}
+
+autoload -Uz async && async
+async_start_worker git_prompt_worker
+async_register_callback git_prompt_worker _zsh_git_prompt_callback
+async_worker_eval git_prompt_worker builtin cd -q $PWD
+async_job git_prompt_worker _zsh_git_prompt_git_status "$ZSH_GIT_PROMPT_SHOW_STASH"
+
+
+function _zsh_git_prompt_chpwd_hook() {
+    async_flush_jobs git_prompt_worker
+    async_worker_eval git_prompt_worker builtin cd -q $PWD
+}
+
+function _zsh_git_prompt_precmd_hook() {
+    async_job git_prompt_worker _zsh_git_prompt_git_status "$ZSH_GIT_PROMPT_SHOW_STASH"
+}
+
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _zsh_git_prompt_chpwd_hook
+add-zsh-hook precmd _zsh_git_prompt_precmd_hook
+
+
+function gitprompt() {
+    [[ -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]] && echo "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
 }
