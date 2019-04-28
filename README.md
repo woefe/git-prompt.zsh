@@ -60,9 +60,21 @@ The structure of the prompt is the following:
 
 ### Appearance
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
-To see changes made to these variables you have to save them in your `.zshrc` and restart Zsh.
 Take a look at the beginning of the [git-prompt.zsh](./git-prompt.zsh) file to see which variables are available and what their defaults are.
 Note that some of them are named differently than in the original Git prompt by Olivier Verdier.
+To see changes made to these variables you have to save them in your `.zshrc` and restart Zsh.
+The variables have to be set before sourcing the `git-prompt.zsh`.
+For example:
+
+```zsh
+autoload -U colors && colors
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[cyan]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="\n]"
+# ...
+source path/to/async.zsh
+source path/to/git-prompt.zsh
+```
+
 
 ### Show number of stash entries
 The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
