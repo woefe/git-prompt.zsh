@@ -41,11 +41,14 @@ autoload -U colors && colors
 _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
 function _zsh_git_prompt_callback() {
     local job="$1" code="$2" output="$3" exec_time="$4" next_pending="$6"
+    local old_status="$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
     if [[ "$job" == "_zsh_git_prompt_git_status" ]]; then
         _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
         (( code == 0 )) && _ZSH_GIT_PROMPT_STATUS_OUTPUT="$output"
-        zle reset-prompt
-        zle -R
+        if [[ "$old_status" != "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]];then
+            zle reset-prompt
+            zle -R
+        fi
     fi
 }
 
@@ -222,5 +225,5 @@ add-zsh-hook precmd _zsh_git_prompt_precmd_hook
 
 
 function gitprompt() {
-    [[ -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]] && echo "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+    echo -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
 }
