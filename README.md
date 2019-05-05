@@ -9,7 +9,6 @@ It is heavily inspired by Olivier Verdier's [zsh-git-prompt](https://github.com/
 * Git with `--porcelain=v2` support, which is available since version 2.11.0.
     You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
 * [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly pre-installed on any *nix system
-* [zsh-async](https://github.com/mafredri/zsh-async)
 
 ## Installation
 The prompt is intended to be highly customizable.
@@ -17,15 +16,8 @@ It actually does not change your prompt at all, but only provides the `gitprompt
 An example configuration will be given below.
 You can find another, and more complete, configuration in my [dotfiles](https://github.com/woefe/dotfiles).
 
-First install [zsh-async](https://github.com/mafredri/zsh-async): Follow **@mafredis** [instructions](https://github.com/mafredri/zsh-async#installation) or download [async.zsh](https://raw.githubusercontent.com/mafredri/zsh-async/master/async.zsh) and source it in your `.zshrc`.
-
-```
-source path/to/async.zsh
-```
-
-Next, clone this repo or [download](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) the `git-prompt.zsh` file.
+Clone this repo or [download](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) the `git-prompt.zsh` file.
 Then add following lines to your `.zshrc`.
-Note that these lines must be written after the `source .../async.zsh`.
 
 ```
 prompt off  # Optional in some cases
@@ -62,7 +54,10 @@ The structure of the prompt is the following:
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
 Take a look at the beginning of the [git-prompt.zsh](./git-prompt.zsh) file to see which variables are available and what their defaults are.
 Note that some of them are named differently than in the original Git prompt by Olivier Verdier.
-To see changes made to these variables you have to save them in your `.zshrc` and restart Zsh.
+
+You can play around with different settings without reloading your shell.
+The Git prompt will automatically pick up your changes to the `ZSH_THEME_GIT_PROMPT_` variables.
+But remember to save them in your `.zshrc` after you tweaked them to your liking!
 The variables have to be set before sourcing the `git-prompt.zsh`.
 For example:
 
@@ -71,10 +66,8 @@ autoload -U colors && colors
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[cyan]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="\n]"
 # ...
-source path/to/async.zsh
 source path/to/git-prompt.zsh
 ```
-
 
 ### Show number of stash entries
 The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
