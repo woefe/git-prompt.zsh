@@ -37,26 +37,9 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
 
 
-
-_ZSH_GIT_PROMPT_STATUS_OUTPUT=""
-function _zsh_git_prompt_callback() {
-    local job="$1" code="$2" output="$3" exec_time="$4" next_pending="$6"
-    local old_status="$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
-    if [[ "$job" == "_zsh_git_prompt_git_status" ]]; then
-        _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
-        (( code == 0 )) && _ZSH_GIT_PROMPT_STATUS_OUTPUT="$output"
-        if [[ "$old_status" != "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]];then
-            zle reset-prompt
-            zle -R
-        fi
-    fi
-}
-
-_zsh_git_prompt_git_status() {
-    local show_stash
-    show_stash="$1"
+function _zsh_git_prompt_git_status() {
     (
-        [[ -n "$show_stash" ]] && (
+        [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
             c=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
             [[ -n "$c" ]] && echo "# stash.count $c"
         )
@@ -203,24 +186,84 @@ _zsh_git_prompt_git_status() {
         '
 }
 
-autoload -Uz async && async
-async_start_worker git_prompt_worker
-async_register_callback git_prompt_worker _zsh_git_prompt_callback
-async_worker_eval git_prompt_worker builtin cd -q $PWD
-async_job git_prompt_worker _zsh_git_prompt_git_status "$ZSH_GIT_PROMPT_SHOW_STASH"
 
+# The async code is taken from
+# https://github.com/zsh-users/zsh-autosuggestions/blob/master/src/async.zsh
 
-function _zsh_git_prompt_chpwd_hook() {
-    async_flush_jobs git_prompt_worker
-    async_worker_eval git_prompt_worker builtin cd -q $PWD
+zmodload zsh/system
+
+function _zsh_git_prompt_async_request() {
+    typeset -g _ZSH_GIT_PROMT_ASYNC_FD _ZSH_GIT_PROMPT_AYNC_PID
+
+    # If we've got a pending request, cancel it
+    if [[ -n "$_ZSH_GIT_PROMT_ASYNC_FD" ]] && { true <&$_ZSH_GIT_PROMT_ASYNC_FD } 2>/dev/null; then
+
+    # Close the file descriptor and remove the handler
+    exec {_ZSH_GIT_PROMT_ASYNC_FD}<&-
+    zle -F $_ZSH_GIT_PROMT_ASYNC_FD
+
+    # Zsh will make a new process group for the child process only if job
+    # control is enabled (MONITOR option)
+    if [[ -o MONITOR ]]; then
+        # Send the signal to the process group to kill any processes that may
+        # have been forked by the suggestion strategy
+        kill -TERM -$_ZSH_GIT_PROMPT_AYNC_PID 2>/dev/null
+    else
+        # Kill just the child process since it wasn't placed in a new process
+        # group. If the suggestion strategy forked any child processes they may
+        # be orphaned and left behind.
+        kill -TERM $_ZSH_GIT_PROMPT_AYNC_PID 2>/dev/null
+        fi
+    fi
+
+    # Fork a process to fetch a suggestion and open a pipe to read from it
+    exec {_ZSH_GIT_PROMT_ASYNC_FD}< <(
+        # Tell parent process our pid
+        echo $sysparams[pid]
+
+        _zsh_git_prompt_git_status
+    )
+
+    # There's a weird bug here where ^C stops working unless we force a fork
+    # See https://github.com/zsh-users/zsh-autosuggestions/issues/364
+    command true
+
+    # Read the pid from the child process
+    read _ZSH_GIT_PROMPT_AYNC_PID <&$_ZSH_GIT_PROMT_ASYNC_FD
+
+    # When the fd is readable, call the response handler
+    zle -F "$_ZSH_GIT_PROMT_ASYNC_FD" _zsh_git_prompt_callback
+}
+
+# Called when new data is ready to be read from the pipe
+# First arg will be fd ready for reading
+# Second arg will be passed in case of error
+_ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+function _zsh_git_prompt_callback() {
+    emulate -L zsh
+    local old_status="$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+
+    if [[ -z "$2" || "$2" == "hup" ]]; then
+        # Read output from fd
+        _ZSH_GIT_PROMPT_STATUS_OUTPUT="$(cat <&$1)"
+        if [[ "$old_status" != "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]];then
+            zle reset-prompt
+            zle -R
+        fi
+
+        # Close the fd
+        exec {1}<&-
+    fi
+
+    # Always remove the handler
+    zle -F "$1"
 }
 
 function _zsh_git_prompt_precmd_hook() {
-    async_job git_prompt_worker _zsh_git_prompt_git_status "$ZSH_GIT_PROMPT_SHOW_STASH"
+    _zsh_git_prompt_async_request
 }
 
 autoload -U add-zsh-hook
-add-zsh-hook chpwd _zsh_git_prompt_chpwd_hook
 add-zsh-hook precmd _zsh_git_prompt_precmd_hook
 
 
