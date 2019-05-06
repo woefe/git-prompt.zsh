@@ -1,6 +1,4 @@
-# Informative Git prompt for Zsh
-
-<img src="screenshot.png" width="400" />
+<h1><img src="screenshot.svg" width="750" /></h1>
 
 A fast, customizable, pure-shell, asynchronous Git prompt for Zsh.
 It is heavily inspired by Olivier Verdier's [zsh-git-prompt](https://github.com/olivierverdier/zsh-git-prompt) and very similar to the "Informative VCS" prompt of fish shell.
@@ -13,14 +11,14 @@ It is heavily inspired by Olivier Verdier's [zsh-git-prompt](https://github.com/
 ## Installation
 The prompt is intended to be highly customizable.
 It actually does not change your prompt at all, but only provides the `gitprompt` function which you can use to build your own prompt.
-An example configuration will be given below.
-You can find another, and more complete, configuration in my [dotfiles](https://github.com/woefe/dotfiles).
+An example configuration is given below.
+You can find another, and more complete, configuration in my [dotfiles](https://github.com/woefe/dotfiles/blob/4253971f13a0a6c621fc0254a7f535d75ea91de1/zsh/.zshrc#L266).
 
 Clone this repo or [download](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) the `git-prompt.zsh` file.
 Then add following lines to your `.zshrc`.
 
 ```
-prompt off  # Optional in some cases
+prompt off  # Optional if promptinit is not loaded
 source path/to/git-prompt.zsh
 PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%F{red}❯❯❯%f) '
 ```
