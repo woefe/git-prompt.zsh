@@ -258,6 +258,9 @@ function _zsh_git_prompt_callback() {
 
     # Always remove the handler
     zle -F "$1"
+
+    # Unset global FD variable to prevent closing user created FDs in the precmd hook
+    unset _ZSH_GIT_PROMPT_ASYNC_FD
 }
 
 function _zsh_git_prompt_precmd_hook() {
