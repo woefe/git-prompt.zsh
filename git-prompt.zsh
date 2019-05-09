@@ -36,6 +36,11 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_STASHED:="%{$fg[blue]%}⚑"}"
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
 
+# Find an awk implementation
+# Prefer nawk over mawk and mawk over awk
+(( $+commands[mawk] )) && : "${ZSH_GIT_PROMPT_AWK_CMD:=mawk}"
+(( $+commands[nawk] )) && : "${ZSH_GIT_PROMPT_AWK_CMD:=nawk}"
+                          : "${ZSH_GIT_PROMPT_AWK_CMD:=awk}"
 
 function _zsh_git_prompt_git_status() {
     emulate -L zsh
@@ -45,7 +50,7 @@ function _zsh_git_prompt_git_status() {
             [[ -n "$c" ]] && echo "# stash.count $c"
         )
         git status --branch --porcelain=v2 2>&1
-    } | awk \
+    } | $ZSH_GIT_PROMPT_AWK_CMD \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \

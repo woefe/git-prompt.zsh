@@ -76,6 +76,21 @@ To enable stash entries add the following line to your `.zshrc`:
 ZSH_GIT_PROMPT_SHOW_STASH=1
 ```
 
+### Change the awk implementation
+Some awk implementations are faster than others.
+By default, the prompt checks for [nawk](https://github.com/onetrueawk/awk) and then [mawk](https://invisible-island.net/mawk/) and then falls back to the system's default awk.
+You can override this behavior by setting `ZSH_GIT_PROMPT_AWK_CMD` to the awk implementation of you liking, before sourcing the `git-prompt.zsh`.
+
+To benchmark an awk implementation you can use the following command.
+```bash
+# This example tests the default awk. You should change it to something else.
+time ZSH_GIT_PROMPT_AWK_CMD=awk zsh -f -c '
+    source path/to/git-prompt.zsh
+    for i in $(seq 1000); do
+        print -P $(_zsh_git_prompt_git_status)
+    done'
+```
+
 ## Features / Non-Features
 * A pure shell implementation using [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html); no Python, no Haskell required
     <!-- Well, technically awk is its own programming language and therefore not "pure shell", but heh -->
