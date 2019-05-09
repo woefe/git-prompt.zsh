@@ -38,13 +38,14 @@ autoload -U colors && colors
 
 
 function _zsh_git_prompt_git_status() {
-    (
+    emulate -L zsh
+    {
         [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
             c=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
             [[ -n "$c" ]] && echo "# stash.count $c"
         )
         git status --branch --porcelain=v2 2>&1
-    ) | awk \
+    } | awk \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
