@@ -19,7 +19,6 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 # OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-setopt PROMPT_SUBST
 autoload -U colors && colors
 
 : "${ZSH_THEME_GIT_PROMPT_PREFIX:="["}"
@@ -35,6 +34,12 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_UNTRACKED:="…"}"
 : "${ZSH_THEME_GIT_PROMPT_STASHED:="%{$fg[blue]%}⚑"}"
 : "${ZSH_THEME_GIT_PROMPT_CLEAN:="%{$fg_bold[green]%}✔"}"
+
+# Disable promptinit if it is loaded
+(( $+functions[promptinit] )) && {promptinit; prompt off}
+
+# Allow parameter and command substitution in the prompt
+setopt PROMPT_SUBST
 
 # Find an awk implementation
 # Prefer nawk over mawk and mawk over awk
