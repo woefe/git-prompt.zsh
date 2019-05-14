@@ -41,6 +41,10 @@ autoload -U colors && colors
 # Allow parameter and command substitution in the prompt
 setopt PROMPT_SUBST
 
+# Override PROMPT if it does not use the gitprompt function
+[[ "$PROMPT" != *gitprompt* && "$RPROMPT" != *gitprompt* ]] \
+    && PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%F{red}❯❯❯%f) '
+
 # Find an awk implementation
 # Prefer nawk over mawk and mawk over awk
 (( $+commands[mawk] )) && : "${ZSH_GIT_PROMPT_AWK_CMD:=mawk}"
