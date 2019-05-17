@@ -28,28 +28,32 @@ The structure of the prompt (in the default configuration) is the following:
 ### Dependencies
 * Git with `--porcelain=v2` support, which is available since version 2.11.0.
     You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
-* [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly pre-installed on any *nix system
+* [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly pre-installed on any \*nix system
 
 ### Arch Linux
-Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR.
+Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR. Maintained by [Felixoid](https://github.com/Felixoid).
 
 ### Manual installation
-Clone this repo or [download git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) the file.
+Clone this repo or download the [git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) file.
 Then source it in your `.zshrc`. For example:
 
 ```bash
-mkdir -p ~/.zsh/git-prompt.zsh
-curl -o ~/.zsh/git-prompt.zsh https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh
-echo "source ~/.zsh/git-prompt.zsh" >> .zshrc
+mkdir -p ~/.zsh
+git clone --depth=1 https://github.com/woefe/git-prompt.zsh ~/.zsh/git-prompt.zsh
+echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
 ```
 
 ## Customization
 Unlike other popular prompts this prompt does not use `promptinit`, which gives you the flexibility to build your own prompt from scratch.
-Use the `gitprompt` function when building your own prompt by overriding the `PROMPT` variable in your `.zshrc`.
+You can build a custom prompt by setting the `PROMPT` variable in your `.zshrc` after souring the `git-prompt.zsh`.
+And you should use `$(gitprompt)` in your `PROMPT` to get the Git prompt.
+Some example `PROMPT` configurations are given below.
 You can find more information on how to configure the `PROMPT` in [Zsh's online documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) or the `zshmisc` manpage, section "SIMPLE PROMPT ESCAPES".
 
 ### Examples
-Some example `PROMPT` configurations are given below.
+You can try these configurations by pasting the variables from below into your running shell.
+You should restart the shell before pasting a new configuration, otherwise some settings from a previous configuration might remain.
+And do not forget to save the `PROMPT` and theming variables to your `.zshrc` after you found a configuration that you like!
 
 #### Default (same as in title)
 ```zsh
@@ -104,10 +108,9 @@ RPROMPT='$(gitprompt)'
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
 Note that some of them are named differently than in the original Git prompt by Olivier Verdier.
 
-You can play around with different settings without reloading your shell.
-The Git prompt will automatically pick up your changes to the `ZSH_THEME_GIT_PROMPT_` variables.
+You can preview your configuration by setting the `ZSH_THEME_GIT_PROMPT_*` variables in a running shell.
 But remember to save them in your `.zshrc` after you tweaked them to your liking!
-For example:
+Example snippet from `.zshrc`:
 
 ```zsh
 source path/to/git-prompt.zsh
@@ -139,6 +142,7 @@ ZSH_GIT_PROMPT_SHOW_STASH=1
 Some awk implementations are faster than others.
 By default, the prompt checks for [nawk](https://github.com/onetrueawk/awk) and then [mawk](https://invisible-island.net/mawk/) and then falls back to the system's default awk.
 You can override this behavior by setting `ZSH_GIT_PROMPT_AWK_CMD` to the awk implementation of you liking, before sourcing the `git-prompt.zsh`.
+Unlike most other settings of this prompt, `ZSH_GIT_PROMPT_AWK_CMD` cannot be adjusted in a running shell, but only in your `.zshrc`.
 
 To benchmark an awk implementation you can use the following command.
 ```bash
@@ -158,7 +162,8 @@ time ZSH_GIT_PROMPT_AWK_CMD=awk zsh -f -c '
 * No caching feature, because it breaks reliable detection of untracked files
 
 ## Known issues
-* If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the Git prompt will not be shown.
-    Executing `git status` or any other Git command will fix the issue.
+* If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the Git prompt will not be shown immediately.
+    Also updates made by external programs or another shell do not show up immediately.
+    Executing any command or simply pressing enter will fix the issue.
 * In large repositories the prompt might slow down, because Git has to find untracked files.
     See `man git-status`, Section `--untracked-files` for possible options to speed things up.
