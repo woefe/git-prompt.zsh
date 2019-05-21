@@ -28,7 +28,7 @@ The structure of the prompt (in the default configuration) is the following:
 ### Dependencies
 * Git with `--porcelain=v2` support, which is available since version 2.11.0.
     You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
-* [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly pre-installed on any \*nix system
+* [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly preinstalled on any \*nix system
 
 ### Arch Linux
 Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR. Maintained by [Felixoid](https://github.com/Felixoid).
@@ -46,7 +46,8 @@ echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
 ## Customization
 Unlike other popular prompts this prompt does not use `promptinit`, which gives you the flexibility to build your own prompt from scratch.
 You can build a custom prompt by setting the `PROMPT` variable in your `.zshrc` after souring the `git-prompt.zsh`.
-And you should use `$(gitprompt)` in your `PROMPT` to get the Git prompt.
+And you should use `'$(gitprompt)'` in your `PROMPT` to get the Git prompt.
+You must set your `PROMPT` with **single quotes**, not double quotes, otherwise the Git prompt will not update properly.
 Some example `PROMPT` configurations are given below.
 You can find more information on how to configure the `PROMPT` in [Zsh's online documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) or the `zshmisc` manpage, section "SIMPLE PROMPT ESCAPES".
 
@@ -163,7 +164,7 @@ time ZSH_GIT_PROMPT_AWK_CMD=awk zsh -f -c '
 
 ## Known issues
 * If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the Git prompt will not be shown immediately.
-    Also updates made by external programs or another shell do not show up immediately.
+    Also, updates made by external programs or another shell do not show up immediately.
     Executing any command or simply pressing enter will fix the issue.
 * In large repositories the prompt might slow down, because Git has to find untracked files.
     See `man git-status`, Section `--untracked-files` for possible options to speed things up.
