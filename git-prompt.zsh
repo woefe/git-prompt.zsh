@@ -281,8 +281,9 @@ function _zsh_git_prompt_precmd_hook() {
     _zsh_git_prompt_async_request
 }
 
-autoload -U add-zsh-hook
-add-zsh-hook precmd _zsh_git_prompt_precmd_hook
+(( $+commands[git] )) \
+    && autoload -U add-zsh-hook \
+    && add-zsh-hook precmd _zsh_git_prompt_precmd_hook
 
 
 function gitprompt() {
