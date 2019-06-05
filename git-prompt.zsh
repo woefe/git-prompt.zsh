@@ -142,6 +142,7 @@ function _zsh_git_prompt_git_status() {
                     print substr(oid, 0, 7);
                 } else {
                     print BRANCH;
+                    gsub("%", "%%", head);
                     print head;
                 }
                 print RC;
