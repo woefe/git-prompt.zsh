@@ -283,11 +283,19 @@ function _zsh_git_prompt_precmd_hook() {
     _zsh_git_prompt_async_request
 }
 
-(( $+commands[git] )) \
-    && autoload -U add-zsh-hook \
-    && add-zsh-hook precmd _zsh_git_prompt_precmd_hook
+if (( $+commands[git] )); then
+    if [[ -z "$ZSH_GIT_PROMPT_NO_ASYNC" ]]; then
+        autoload -U add-zsh-hook \
+            && add-zsh-hook precmd _zsh_git_prompt_precmd_hook
 
-
-function gitprompt() {
-    echo -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
-}
+        function gitprompt() {
+            echo -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+        }
+    else
+        function gitprompt() {
+            _zsh_git_prompt_git_status
+        }
+    fi
+else
+    function gitprompt() { }
+fi
