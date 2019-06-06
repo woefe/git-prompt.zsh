@@ -139,11 +139,33 @@ To enable stash entries add the following line to your `.zshrc`:
 ZSH_GIT_PROMPT_SHOW_STASH=1
 ```
 
+### Force blank
+Since the prompt is asynchronous by default, the Git status updates slightly delayed.
+This has the benefit that the prompt will always be responsive even if the repository is huge and/or your disk is slow.
+But it also means that the old status will be displayed for some time.
+You can force the prompt to blank out instead of displaying a potentially outdated status, but be warned that this will probably increase flickering.
+Set the following variable in your `.zshrc` **before** sourcing the `git-prompt.zsh` to enable this behavior.
+
+```bash
+ZSH_GIT_PROMPT_FORCE_BLANK=1
+```
+`ZSH_GIT_PROMPT_FORCE_BLANK` cannot be adjusted in a running shell, but only in your `.zshrc`.
+
+### Disable async
+If you are not happy with the asynchronous behavior, you can disable it altogether.
+But be warned that this can make your shell painfully slow if you enter large repositories or if your disk is slow.
+Set the following variable in your `.zshrc` **before** sourcing the `git-prompt.zsh` to enable this behavior.
+
+```bash
+ZSH_GIT_PROMPT_NO_ASYNC=1
+```
+`ZSH_GIT_PROMPT_NO_ASYNC` cannot be adjusted in a running shell, but only in your `.zshrc`.
+
 ### Change the awk implementation
 Some awk implementations are faster than others.
 By default, the prompt checks for [nawk](https://github.com/onetrueawk/awk) and then [mawk](https://invisible-island.net/mawk/) and then falls back to the system's default awk.
-You can override this behavior by setting `ZSH_GIT_PROMPT_AWK_CMD` to the awk implementation of you liking, before sourcing the `git-prompt.zsh`.
-Unlike most other settings of this prompt, `ZSH_GIT_PROMPT_AWK_CMD` cannot be adjusted in a running shell, but only in your `.zshrc`.
+You can override this behavior by setting `ZSH_GIT_PROMPT_AWK_CMD` to the awk implementation of you liking **before** sourcing the `git-prompt.zsh`.
+`ZSH_GIT_PROMPT_AWK_CMD` cannot be adjusted in a running shell, but only in your `.zshrc`.
 
 To benchmark an awk implementation you can use the following command.
 ```bash
@@ -158,6 +180,9 @@ time ZSH_GIT_PROMPT_AWK_CMD=awk zsh -f -c '
 ## Features / Non-Features
 * A pure shell implementation using [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html); no Python, no Haskell required
     <!-- Well, technically awk is its own programming language and therefore not "pure shell", but heh -->
+* Only the Git status.
+    This prompt basically only gives you the `gitprompt` function, which you can use to build your own prompt.
+    If you are looking for something more complete and blazing fast, I can recommend [powerlevel10k](https://github.com/romkatv/powerlevel10k).
 * Uses standard Git, no external Git status daemon (like [gitstatus](https://github.com/romkatv/gitstatus)) required
 * Fast; Git command is invoked only once and asynchronously when a new prompt is drawn
 * No caching feature, because it breaks reliable detection of untracked files
