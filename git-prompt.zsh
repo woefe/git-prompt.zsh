@@ -279,6 +279,7 @@ function _zsh_git_prompt_callback() {
 }
 
 function _zsh_git_prompt_precmd_hook() {
+    [[ -n "$ZSH_GIT_PROMPT_FORCE_BLANK" ]] && _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
     _zsh_git_prompt_async_request
 }
 
