@@ -48,11 +48,13 @@ setup() {
 
     # To avoid glitching with fzf's alt+c binding we override the fzf-redraw-prompt widget.
     # The widget by default reruns all precmd hooks, which prints the newline again.
-    # We unset _PROMPT_NEWLINE before running the widget to avoid this.
-    fzf_redraw_prompt_super=$(functions fzf-redraw-prompt)
+    # We therefore run all precmd hooks except _prompt_newline.
     function fzf-redraw-prompt() {
-        unset _PROMPT_NEWLINE
-        eval "$fzf_redraw_prompt_super;fzf-redraw-prompt"
+        local precmd
+        for precmd in ${precmd_functions:#_prompt_newline}; do
+            $precmd
+        done
+        zle reset-prompt
     }
 }
 setup
