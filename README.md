@@ -41,6 +41,9 @@ Then source it in your `.zshrc`. For example:
 mkdir -p ~/.zsh
 git clone --depth=1 https://github.com/woefe/git-prompt.zsh ~/.zsh/git-prompt.zsh
 echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
+
+# Optional: install an example configuration
+echo "source ~/.zsh/git-prompt.zsh/examples/pure.zsh" >> .zshrc
 ```
 
 ## Customization
@@ -52,16 +55,15 @@ Some example `PROMPT` configurations are given below.
 You can find more information on how to configure the `PROMPT` in [Zsh's online documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) or the `zshmisc` manpage, section "SIMPLE PROMPT ESCAPES".
 
 ### Examples
-You can try these configurations by pasting the variables from below into your running shell.
-You should restart the shell before pasting a new configuration, otherwise some settings from a previous configuration might remain.
-And do not forget to save the `PROMPT` and theming variables to your `.zshrc` after you found a configuration that you like!
+You can try these configurations by souring the `.zsh` files from the [examples](./examples) directory.
+After you have found a configuration that you like, source it in your `.zshrc`.
 
 #### Default (same as in title)
 ```zsh
 # Preview:
 # ../git-prompt.zsh [master↑1|●1✚1…1] ❯❯❯
 
-PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%F{red}❯❯❯%f) '
+source examples/default.zsh
 ```
 
 #### Multi-line prompt
@@ -70,28 +72,7 @@ PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%
 # ┏╸130 · ~/workspace/git-prompt.zsh · ⎇ master↑1 ‹●1✚1…1›
 # ┗╸❯❯❯
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%B · %b"
-ZSH_THEME_GIT_PROMPT_SUFFIX="›"
-ZSH_THEME_GIT_PROMPT_SEPARATOR=" ‹"
-ZSH_THEME_GIT_PROMPT_BRANCH="⎇ %{$fg_bold[cyan]%}"
-PROMPT=$'┏╸%(?..%F{red}%?%f · )%B%~%b$(gitprompt)\n┗╸%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f '
-```
-
-#### [Pure](https://github.com/sindresorhus/pure) clone
-```zsh
-# Preview:
-#
-# ~/workspace/git-prompt.zsh master↑3 ✚2…1
-# ❯
-
-ZSH_THEME_GIT_PROMPT_PREFIX=""
-ZSH_THEME_GIT_PROMPT_SUFFIX=" "
-ZSH_THEME_GIT_PROMPT_SEPARATOR=" "
-ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_no_bold[cyan]%}:"
-ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_no_bold[grey]%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_no_bold[cyan]%}↓"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_no_bold[cyan]%}↑"
-PROMPT=$'\n%F{blue}%~%f %F{242}$(gitprompt)%f\n%(12V.%F{242}%12v%f .)%(?.%F{magenta}.%F{red})❯%f '
+source examples/multiline.zsh
 ```
 
 #### Git status on the right
@@ -99,11 +80,26 @@ PROMPT=$'\n%F{blue}%~%f %F{242}$(gitprompt)%f\n%(12V.%F{242}%12v%f .)%(?.%F{mage
 # Preview:
 # ~/workspace/git-prompt.zsh ≻≻≻                                ≺ master↑1|●1✚1…1
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[default]%}≺ "
-ZSH_THEME_GIT_PROMPT_SUFFIX=""
-PROMPT='%B%~%b %F{blue}≻≻≻%f '
-RPROMPT='$(gitprompt)'
+source examples/rprompt.zsh
 ```
+
+#### [Pure](https://github.com/sindresorhus/pure) clone
+This clone of the Pure prompt has support for Python virtualenvs, but none of the timing features or a vi mode.
+If you are using [fzf](https://github.com/junegunn/fzf), source the example after sourcing fzf's keybindings.
+```zsh
+# Preview:
+#
+# ~/workspace/git-prompt.zsh master↑3 ✚2…1
+# ❯
+
+source examples/pure.zsh
+```
+If you want to try other examples again after sourcing the Pure example, you might have to restart your shell, because this prompt will always print a newline between prompts.
+
+#### Woefe's config
+I'm using a prompt similar to the multi-line and Pure examples, but with vi-mode.
+My setup uses a few popular plugins and is based on a stripped down version of [grml's zsh config](https://github.com/grml/grml-etc-core/blob/master/etc/zsh/zshrc).
+Check out my [dotfiles](https://github.com/woefe/dotfiles/) to learn more (in particular the [vi-mode.plugin.zsh](https://github.com/woefe/dotfiles/blob/master/zsh/.zsh-plugins/vi-mode.plugin.zsh) and search for `#{{{ Prompt` in the [.zshrc](https://github.com/woefe/dotfiles/blob/master/zsh/.zshrc)).
 
 ### Appearance
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
@@ -114,7 +110,6 @@ But remember to save them in your `.zshrc` after you tweaked them to your liking
 Example snippet from `.zshrc`:
 
 ```zsh
-source path/to/git-prompt.zsh
 ZSH_THEME_GIT_PROMPT_PREFIX="["
 ZSH_THEME_GIT_PROMPT_SUFFIX="] "
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
@@ -128,6 +123,7 @@ ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+source path/to/git-prompt.zsh
 ```
 
 ### Show number of stash entries
@@ -144,12 +140,11 @@ Since the prompt is asynchronous by default, the Git status updates slightly del
 This has the benefit that the prompt will always be responsive even if the repository is huge and/or your disk is slow.
 But it also means that the old status will be displayed for some time.
 You can force the prompt to blank out instead of displaying a potentially outdated status, but be warned that this will probably increase flickering.
-Set the following variable in your `.zshrc` **before** sourcing the `git-prompt.zsh` to enable this behavior.
+Set the following variable in your `.zshrc` to enable this behavior:
 
 ```bash
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ```
-`ZSH_GIT_PROMPT_FORCE_BLANK` cannot be adjusted in a running shell, but only in your `.zshrc`.
 
 ### Disable async
 If you are not happy with the asynchronous behavior, you can disable it altogether.
