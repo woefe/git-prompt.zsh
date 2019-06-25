@@ -32,7 +32,7 @@ The structure of the prompt (in the default configuration) is the following:
 
 ### Zplug
 ```
-zplug woefe/git-prompt.zsh
+zplug "woefe/git-prompt.zsh"
 ```
 
 ### Arch Linux
