@@ -30,6 +30,11 @@ The structure of the prompt (in the default configuration) is the following:
     You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
 * [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly preinstalled on any \*nix system
 
+### Zplug
+```
+zplug woefe/git-prompt.zsh
+```
+
 ### Arch Linux
 Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR. Maintained by [Felixoid](https://github.com/Felixoid).
 
