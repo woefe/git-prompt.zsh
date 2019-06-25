@@ -31,8 +31,15 @@ The structure of the prompt (in the default configuration) is the following:
 * [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly preinstalled on any \*nix system
 
 ### Zplug
+Either install the default prompt (see [Examples](#examples) section below) with
 ```
+# Installs the "default" example
 zplug "woefe/git-prompt.zsh"
+```
+or choose an example prompt with
+```
+# Installs the "multiline" example
+zplug "woefe/git-prompt.zsh", use:"{git-prompt.zsh,examples/multiline.zsh}"
 ```
 
 ### Arch Linux
