@@ -108,10 +108,22 @@ source examples/pure.zsh
 ```
 If you want to try other examples again after sourcing the Pure example, you might have to restart your shell, because this prompt will always print a newline between prompts.
 
-#### Woefe's config
-I'm using a prompt similar to the multi-line and Pure examples, but with vi-mode.
-My setup uses a few popular plugins and is based on a stripped down version of [grml's zsh config](https://github.com/grml/grml-etc-core/blob/master/etc/zsh/zshrc).
-Check out my [dotfiles](https://github.com/woefe/dotfiles/) to learn more (in particular the [vi-mode.plugin.zsh](https://github.com/woefe/dotfiles/blob/master/zsh/.zsh-plugins/vi-mode.plugin.zsh) and search for `#{{{ Prompt` in the [.zshrc](https://github.com/woefe/dotfiles/blob/master/zsh/.zshrc)).
+#### Woefe's prompt (wprompt)
+The wprompt example is similar to the multi-line and Pure examples, but with optional [vi-mode](https://github.com/woefe/vi-mode.zsh).
+
+- Depends on [Font Awesome](https://fontawesome.com/) for the Python symbol
+- Optionally depends on [vi-mode](https://github.com/woefe/vi-mode.zsh)
+- Source this example after fzf and after loading [vi-mode](https://github.com/woefe/vi-mode.zsh)
+
+```zsh
+# Preview:
+#
+# ┏╸~/workspace/ytcc ·  ytcc · ⎇ master ‹✔›
+# ┗╸❯❯❯
+
+source examples/wprompt.zsh
+```
+If you want to try other examples again after sourcing this example, you might have to restart your shell, because this prompt will always print a newline between prompts.
 
 ### Appearance
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
