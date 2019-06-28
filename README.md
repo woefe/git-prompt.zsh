@@ -45,6 +45,12 @@ zplug "woefe/git-prompt.zsh", use:"{git-prompt.zsh,examples/multiline.zsh}"
 ### Arch Linux
 Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR. Maintained by [Felixoid](https://github.com/Felixoid).
 
+### FreeBSD
+Install the [git-prompt.zsh](https://www.freshports.org/shells/git-prompt.zsh/) package with
+```
+pkg install git-prompt.zsh
+```
+
 ### Manual installation
 Clone this repo or download the [git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) file.
 Then source it in your `.zshrc`. For example:
