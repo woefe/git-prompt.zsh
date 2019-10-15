@@ -34,6 +34,12 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_UNTRACKED="…"}"
 : "${ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"}"
 : "${ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"}"
+: "${ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX=""}"
+: "${ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX=""}"
+: "${ZSH_THEME_GIT_PROMPT_TAGS_SEPERATOR=", "}"
+: "${ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "}"
+: "${ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""}"
+: "${ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"}"
 
 # Disable promptinit if it is loaded
 (( $+functions[promptinit] )) && {promptinit; prompt off}
@@ -55,7 +61,7 @@ function _zsh_git_prompt_git_status() {
     emulate -L zsh
     {
         [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
-            c=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+            c=$(command git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
             [[ -n "$c" ]] && echo "# stash.count $c"
         )
         command git status --branch --porcelain=v2 2>&1 || echo "fatal: git command failed"
@@ -202,6 +208,37 @@ function _zsh_git_prompt_git_status() {
         '
 }
 
+function _zsh_git_prompt_git_status_secondary() {
+    tags=$(command git tag --points-at=HEAD 2> /dev/null)
+
+    [[ -z "$tags" ]] && return
+
+    echo -n ${ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX}
+    echo -n ${ZSH_THEME_GIT_PROMPT_TAGS_PREFIX}
+
+    echo "$tags" | $ZSH_GIT_PROMPT_AWK_CMD \
+        -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_TAGS_SEPERATOR" \
+        -v TAG="$ZSH_THEME_GIT_PROMPT_TAG" \
+        -v RC="%{$reset_color%}" \
+        '
+            BEGIN {
+                ORS = "";
+            }
+            {
+                if (NR != 1) {
+                    print SEPARATOR;
+                    print RC;
+                }
+                print TAG;
+                print $0;
+                print RC;
+            }
+        '
+
+    echo -n ${ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX}
+    echo -n ${ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX}
+}
+
 
 # The async code is taken from
 # https://github.com/zsh-users/zsh-autosuggestions/blob/master/src/async.zsh
@@ -238,6 +275,9 @@ function _zsh_git_prompt_async_request() {
         echo $sysparams[pid]
 
         _zsh_git_prompt_git_status
+        [[ -n "$ZSH_GIT_PROMPT_ENABLE_SECONDARY" ]] \
+            && echo -n "##secondary##" \
+            && _zsh_git_prompt_git_status_secondary
     )
 
     # There's a weird bug here where ^C stops working unless we force a fork
@@ -255,14 +295,23 @@ function _zsh_git_prompt_async_request() {
 # First arg will be fd ready for reading
 # Second arg will be passed in case of error
 _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+_ZSH_GIT_PROMPT_STATUS_SECONDARY_OUTPUT=""
 function _zsh_git_prompt_callback() {
     emulate -L zsh
-    local old_status="$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+    local old_primary="$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
+    local old_secondary="$_ZSH_GIT_PROMPT_STATUS_SECONDARY_OUTPUT"
+    local fd_data
+    local -a output
 
     if [[ -z "$2" || "$2" == "hup" ]]; then
         # Read output from fd
-        _ZSH_GIT_PROMPT_STATUS_OUTPUT="$(cat <&$1)"
-        if [[ "$old_status" != "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]];then
+        fd_data="$(cat <&$1)"
+        output=( ${(s:##secondary##:)fd_data} )
+        _ZSH_GIT_PROMPT_STATUS_OUTPUT="${output[1]}"
+        _ZSH_GIT_PROMPT_STATUS_SECONDARY_OUTPUT="${output[2]}"
+
+        if [[ "$old_primary" != "$_ZSH_GIT_PROMPT_STATUS_OUTPUT" ]] \
+            || [[ "$old_secondary" != "$_ZSH_GIT_PROMPT_STATUS_SECONDARY_OUTPUT" ]] ; then
             zle reset-prompt
             zle -R
         fi
@@ -279,7 +328,10 @@ function _zsh_git_prompt_callback() {
 }
 
 function _zsh_git_prompt_precmd_hook() {
-    [[ -n "$ZSH_GIT_PROMPT_FORCE_BLANK" ]] && _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+    if [[ -n "$ZSH_GIT_PROMPT_FORCE_BLANK" ]]; then
+        _ZSH_GIT_PROMPT_STATUS_OUTPUT=""
+        _ZSH_GIT_PROMPT_STATUS_SECONDARY_OUTPUT=""
+    fi
     _zsh_git_prompt_async_request
 }
 
@@ -291,11 +343,21 @@ if (( $+commands[git] )); then
         function gitprompt() {
             echo -n "$_ZSH_GIT_PROMPT_STATUS_OUTPUT"
         }
+
+        function gitprompt_secondary() {
+            echo -n "$_ZSH_GIT_PROMPT_STATUS_SECONDARY_OUTPUT"
+        }
     else
         function gitprompt() {
             _zsh_git_prompt_git_status
         }
+
+        function gitprompt_secondary() {
+            [[ -n "$ZSH_GIT_PROMPT_ENABLE_SECONDARY" ]] \
+                && _zsh_git_prompt_git_status_secondary
+        }
     fi
 else
     function gitprompt() { }
+    function gitprompt_secondary() { }
 fi

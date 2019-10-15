@@ -115,7 +115,7 @@ source examples/pure.zsh
 If you want to try other examples again after sourcing the Pure example, you might have to restart your shell, because this prompt will always print a newline between prompts.
 
 #### Woefe's prompt (wprompt)
-The wprompt example is similar to the multi-line and Pure examples, but with optional [vi-mode](https://github.com/woefe/vi-mode.zsh).
+The wprompt example is similar to the multi-line and Pure examples, but with optional [vi-mode](https://github.com/woefe/vi-mode.zsh) and the secondary prompt enabled.
 
 - Depends on [Font Awesome](https://fontawesome.com/) for the Python symbol
 - Optionally depends on [vi-mode](https://github.com/woefe/vi-mode.zsh)
@@ -131,6 +131,16 @@ source examples/wprompt.zsh
 ```
 If you want to try other examples again after sourcing this example, you might have to restart your shell, because this prompt will always print a newline between prompts.
 
+### Enable secondary prompt
+The prompt comes with a secondary function that shows the tags that HEAD points to.
+Enabling this will execute another Git command every time a new prompt is shown!
+To use the secondary prompt you have to enable it and add the `'gitprompt_secondary'` function to you `PROMPT` or `RPROMPT` variables.
+You enable the secondary prompt by adding the following line to your `.zshrc`:
+
+```bash
+ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
+```
+
 ### Appearance
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
 Note that some of them are named differently than in the original Git prompt by Olivier Verdier.
@@ -140,6 +150,7 @@ But remember to save them in your `.zshrc` after you tweaked them to your liking
 Example snippet from `.zshrc`:
 
 ```zsh
+# Theming variables for primary prompt
 ZSH_THEME_GIT_PROMPT_PREFIX="["
 ZSH_THEME_GIT_PROMPT_SUFFIX="] "
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
@@ -153,12 +164,20 @@ ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+
+# Theming variables for the secondary prompt
+ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_TAGS_SEPERATOR=", "
+ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "
+ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"
 source path/to/git-prompt.zsh
 ```
 
 ### Show number of stash entries
 The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
-Enabling this will execute a second Git command every time a new prompt is shown!
+Enabling this will execute another Git command every time a new prompt is shown!
 To enable stash entries add the following line to your `.zshrc`:
 
 ```bash

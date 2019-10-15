@@ -1,4 +1,6 @@
 ZSH_GIT_PROMPT_FORCE_BLANK=1
+ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
+
 ZSH_THEME_GIT_PROMPT_PREFIX=" · "
 ZSH_THEME_GIT_PROMPT_SUFFIX="›"
 ZSH_THEME_GIT_PROMPT_SEPARATOR=" ‹"
@@ -12,6 +14,7 @@ ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
+ZSH_THEME_GIT_PROMPT_TAGS_PREFIX=" · 🏷 "
 
 PROMPT=$'┏╸'
 [ -n "$SSH_CLIENT" ] \
@@ -20,6 +23,7 @@ PROMPT=$'┏╸'
 PROMPT+='%B%30<..<%~%b%<<'             # Path truncated to 30 characters
 PROMPT+='%(12V. · %F{244} %12v%f.)'   # Python virtualenv name
 PROMPT+='$(gitprompt)'                 # Git status
+PROMPT+='$(gitprompt_secondary)'       # Git status secondary info
 PROMPT+=$'\n┗╸'                        # Newline
 
 # Vi mode indicator, if github.com/woefe/vi-mode.zsh is loaded
