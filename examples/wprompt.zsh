@@ -16,11 +16,11 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
 PROMPT=$'┏╸'
 [ -n "$SSH_CLIENT" ] \
     && [ -n "$SSH_TTY" ] \
-    && PROMPT+='%B%F{blue}@%m:%f%b · '  # Hostname, if in SSH session
-PROMPT+='%B%30<..<%~%b%<<'              # Path truncated to 30 characters
-PROMPT+='%(12V. · %F{244} %12v%f.)'    # Python virtualenv name
-PROMPT+='$(gitprompt)'                  # Git status
-PROMPT+=$'\n┗╸'                         # Newline
+    && PROMPT+='%B%F{blue}@%m%f%b · '  # Hostname, if in SSH session
+PROMPT+='%B%30<..<%~%b%<<'             # Path truncated to 30 characters
+PROMPT+='%(12V. · %F{244} %12v%f.)'   # Python virtualenv name
+PROMPT+='$(gitprompt)'                 # Git status
+PROMPT+=$'\n┗╸'                        # Newline
 
 # Vi mode indicator, if github.com/woefe/vi-mode.zsh is loaded
 if (( $+functions[vi_mode_status] )); then
