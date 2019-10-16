@@ -141,6 +141,9 @@ You enable the secondary prompt by adding the following line to your `.zshrc`:
 ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
 ```
 
+The secondary prompt uses the [label emoji](https://emojipedia.org/label/) by default.
+If you encounter problems with the label character, change it (see below) or install a font that can display it, for example [Unifont](https://savannah.gnu.org/projects/unifont) or [twemoji](https://github.com/eosrei/twemoji-color-font).
+
 ### Appearance
 The appearance of the prompt can be adjusted by changing the variables that start with `ZSH_THEME_GIT_PROMPT_`.
 Note that some of them are named differently than in the original Git prompt by Olivier Verdier.
