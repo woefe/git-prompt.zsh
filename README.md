@@ -134,7 +134,7 @@ If you want to try other examples again after sourcing this example, you might h
 ### Enable secondary prompt
 The prompt comes with a secondary function that shows the tags that HEAD points to.
 Enabling this will execute another Git command every time a new prompt is shown!
-To use the secondary prompt you have to enable it and add the `'gitprompt_secondary'` function to you `PROMPT` or `RPROMPT` variables.
+To use the secondary prompt you have to enable it and add the `'gitprompt_secondary'` function to your `PROMPT` or `RPROMPT` variables.
 You enable the secondary prompt by adding the following line to your `.zshrc`:
 
 ```bash
@@ -171,7 +171,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
 # Theming variables for the secondary prompt
 ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX=""
-ZSH_THEME_GIT_PROMPT_TAGS_SEPERATOR=", "
+ZSH_THEME_GIT_PROMPT_TAGS_SEPARATOR=", "
 ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "
 ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""
 ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"

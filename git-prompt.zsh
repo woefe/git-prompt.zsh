@@ -36,7 +36,7 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"}"
 : "${ZSH_THEME_GIT_PROMPT_SECONDARY_PREFIX=""}"
 : "${ZSH_THEME_GIT_PROMPT_SECONDARY_SUFFIX=""}"
-: "${ZSH_THEME_GIT_PROMPT_TAGS_SEPERATOR=", "}"
+: "${ZSH_THEME_GIT_PROMPT_TAGS_SEPARATOR=", "}"
 : "${ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "}"
 : "${ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""}"
 : "${ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"}"
@@ -217,7 +217,7 @@ function _zsh_git_prompt_git_status_secondary() {
     echo -n ${ZSH_THEME_GIT_PROMPT_TAGS_PREFIX}
 
     echo "$tags" | $ZSH_GIT_PROMPT_AWK_CMD \
-        -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_TAGS_SEPERATOR" \
+        -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_TAGS_SEPARATOR" \
         -v TAG="$ZSH_THEME_GIT_PROMPT_TAG" \
         -v RC="%{$reset_color%}" \
         '
