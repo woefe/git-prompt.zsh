@@ -30,7 +30,7 @@ The structure of the prompt (in the default configuration) is the following:
     You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
 * [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly preinstalled on any \*nix system
 
-### Zplug
+### [Zplug](https://github.com/zplug/zplug)
 Either install the default prompt (see [Examples](#examples) section below) with
 ```
 # Installs the "default" example
@@ -41,6 +41,13 @@ or choose an example prompt with
 # Installs the "multiline" example
 zplug "woefe/git-prompt.zsh", use:"{git-prompt.zsh,examples/multiline.zsh}"
 ```
+
+### [Zplugin](https://github.com/zdharma/zplugin)
+```
+zplugin ice atload'!_zsh_git_prompt_precmd_hook' lucid
+zplugin load woefe/git-prompt.zsh
+```
+Note that this method does not work if you want to disable the asynchronous rendering.
 
 ### Arch Linux
 Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR. Maintained by [Felixoid](https://github.com/Felixoid).
