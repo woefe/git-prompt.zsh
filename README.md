@@ -13,6 +13,7 @@ The structure of the prompt (in the default configuration) is the following:
 * `branch_name`: Name of the current branch or commit hash if HEAD is detached. When in 'detached HEAD' state, the
     `branch_name` will be prefixed with a colon `:` to indicate that it is actually a hash and not a branch name.
 * `tracking_status`:
+    * `↯`: linked to remote branch `origin/<branch_name>`
     * `↑n`: ahead of remote by `n` commits
     * `↓n`: behind remote by `n` commits
     * `↓m↑n`: branches diverged; other by `m` commits, yours by `n` commits
