@@ -26,8 +26,8 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_SEPARATOR="|"}"
 : "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE="auto"}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%B↯%b"}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE=""}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}↯"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[yellow]%}("}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX=")"}"
 : "${ZSH_THEME_GIT_PROMPT_BEHIND="↓"}"
@@ -168,19 +168,9 @@ function _zsh_git_prompt_git_status() {
 
                 if (upstream != "" && UPSTREAM_TYPE != "none") {
                     gsub("%", "%%", upstream);
-                    if (UPSTREAM_TYPE == "auto") {
-                        if (upstream == head) {
-                            print UPSTREAM_SYMBOL;
-                        } else {
-                            print UPSTREAM_PREFIX;
-                            print upstream;
-                            print UPSTREAM_SUFFIX;
-                        }
-                    }
                     if (UPSTREAM_TYPE == "symbol") {
                         print UPSTREAM_SYMBOL;
-                    }
-                    if (UPSTREAM_TYPE == "full") {
+                    } else {
                         print UPSTREAM_PREFIX;
                         print upstream;
                         print UPSTREAM_SUFFIX;
