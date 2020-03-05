@@ -13,8 +13,8 @@ The structure of the prompt (in the default configuration) is the following:
 * `branch_name`: Name of the current branch or commit hash if HEAD is detached. When in 'detached HEAD' state, the
     `branch_name` will be prefixed with a colon `:` to indicate that it is actually a hash and not a branch name.
 * `upstream`: Name of the current branch's upstream (remote branch) if exsit.
-    * set `ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="none"` will always hide upstream
-    * set `ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="symbol"` will display a `↯` instead of upstream name
+    * set `ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE="none"` will always hide upstream
+    * set `ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE="symbol"` will display a `↯` instead of upstream name
 * `tracking_status`:
     * `↑n`: ahead of remote by `n` commits
     * `↓n`: behind remote by `n` commits
