@@ -27,9 +27,8 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE="auto"}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_COLOR="%{$fg[yellow]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%B↯%b"}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="("}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[yellow]%}("}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX=")"}"
 : "${ZSH_THEME_GIT_PROMPT_BEHIND="↓"}"
 : "${ZSH_THEME_GIT_PROMPT_AHEAD="↑"}"
@@ -77,7 +76,6 @@ function _zsh_git_prompt_git_status() {
         -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
         -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
         -v UPSTREAM_TYPE="$ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE" \
-        -v UPSTREAM_COLOR="$ZSH_THEME_GIT_PROMPT_UPSTREAM_COLOR" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
         -v UPSTREAM_SUFFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX" \
@@ -169,7 +167,6 @@ function _zsh_git_prompt_git_status() {
                 print RC;
 
                 if (upstream != "" && UPSTREAM_TYPE != "none") {
-                    print UPSTREAM_COLOR;
                     gsub("origin/", "", upstream);
                     if (UPSTREAM_TYPE == "auto") {
                         if (upstream == head) {
