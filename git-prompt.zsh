@@ -167,7 +167,7 @@ function _zsh_git_prompt_git_status() {
                 print RC;
 
                 if (upstream != "" && UPSTREAM_TYPE != "none") {
-                    gsub("origin/", "", upstream);
+                    gsub("%", "%%", upstream);
                     if (UPSTREAM_TYPE == "auto") {
                         if (upstream == head) {
                             print UPSTREAM_SYMBOL;
