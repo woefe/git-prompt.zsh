@@ -13,7 +13,7 @@ The structure of the prompt (in the default configuration) is the following:
 * `branch_name`: Name of the current branch or commit hash if HEAD is detached. When in 'detached HEAD' state, the
     `branch_name` will be prefixed with a colon `:` to indicate that it is actually a hash and not a branch name.
 * `upstream`: Name of the remote branch if it exist.
-    Must be explicitly enabled. See [Enable remote branch info](#enable-remote-branch-info)
+    Must be enabled explicitly (see [Enable remote branch info](#enable-remote-branch-info)).
 * `tracking_status`:
     * `↑n`: ahead of remote by `n` commits
     * `↓n`: behind remote by `n` commits
