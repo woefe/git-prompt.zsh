@@ -21,15 +21,23 @@
 
 autoload -U colors && colors
 
+# Settings
+: "${ZSH_GIT_PROMPT_SHOW_UPSTREAM=""}"
+: "${ZSH_GIT_PROMPT_SHOW_STASH=""}"
+: "${ZSH_GIT_PROMPT_ENABLE_SECONDARY=""}"
+: "${ZSH_GIT_PROMPT_NO_ASYNC=""}"
+: "${ZSH_GIT_PROMPT_FORCE_BLANK=""}"
+: "${ZSH_GIT_PROMPT_AWK_CMD=""}"
+
+# Theming
 : "${ZSH_THEME_GIT_PROMPT_PREFIX="["}"
 : "${ZSH_THEME_GIT_PROMPT_SUFFIX="] "}"
 : "${ZSH_THEME_GIT_PROMPT_SEPARATOR="|"}"
 : "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE=""}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}↯"}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[yellow]%}("}"
-: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX=")"}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"}"
 : "${ZSH_THEME_GIT_PROMPT_BEHIND="↓"}"
 : "${ZSH_THEME_GIT_PROMPT_AHEAD="↑"}"
 : "${ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"}"
@@ -75,7 +83,7 @@ function _zsh_git_prompt_git_status() {
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
         -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
         -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
-        -v UPSTREAM_TYPE="$ZSH_THEME_GIT_PROMPT_UPSTREAM_TYPE" \
+        -v UPSTREAM_TYPE="$ZSH_GIT_PROMPT_SHOW_UPSTREAM" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
         -v UPSTREAM_SUFFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX" \
@@ -166,11 +174,11 @@ function _zsh_git_prompt_git_status() {
                 }
                 print RC;
 
-                if (upstream != "" && UPSTREAM_TYPE != "none") {
+                if (upstream != "") {
                     gsub("%", "%%", upstream);
                     if (UPSTREAM_TYPE == "symbol") {
                         print UPSTREAM_SYMBOL;
-                    } else {
+                    } else if (UPSTREAM_TYPE == "full") {
                         print UPSTREAM_PREFIX;
                         print upstream;
                         print UPSTREAM_SUFFIX;
