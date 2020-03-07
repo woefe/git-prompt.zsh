@@ -7,11 +7,13 @@ It is heavily inspired by Olivier Verdier's [zsh-git-prompt](https://github.com/
 The structure of the prompt (in the default configuration) is the following:
 
 ```
-[<branch_name><tracking_status>|<local_status>]
+[<branch_name><upstream><tracking_status>|<local_status>]
 ```
 
 * `branch_name`: Name of the current branch or commit hash if HEAD is detached. When in 'detached HEAD' state, the
     `branch_name` will be prefixed with a colon `:` to indicate that it is actually a hash and not a branch name.
+* `upstream`: Name of the remote branch if it exist.
+    Must be enabled explicitly (see [Enable remote branch info](#enable-remote-branch-info)).
 * `tracking_status`:
     * `↑n`: ahead of remote by `n` commits
     * `↓n`: behind remote by `n` commits
@@ -166,6 +168,9 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="] "
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
 ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "
+ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"
+ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"
 ZSH_THEME_GIT_PROMPT_BEHIND="↓"
 ZSH_THEME_GIT_PROMPT_AHEAD="↑"
 ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
@@ -184,6 +189,11 @@ ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""
 ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"
 source path/to/git-prompt.zsh
 ```
+
+### Enable remote branch info
+The prompt will show information about the remote branch, if `ZSH_GIT_PROMPT_SHOW_UPSTREAM` is set to `full` or `symbol`.
+The `full` option will print the full remote branch name enclosed by `ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX` and `ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX`.
+The `symbol` option prints only `ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL`.
 
 ### Show number of stash entries
 The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
