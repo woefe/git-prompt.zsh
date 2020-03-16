@@ -61,7 +61,7 @@ setopt PROMPT_SUBST
 
 # Override PROMPT if it does not use the gitprompt function
 [[ "$PROMPT" != *gitprompt* && "$RPROMPT" != *gitprompt* ]] \
-    && PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%F{red}❯❯❯%f) '
+    && PROMPT='%B%40<..<%~ %b$(gitprompt)%(?.%F{blue}❯%F{cyan}❯%(!.%F{red}.%F{green})❯%f.%F{red}❯❯❯%f) '
 
 # Find an awk implementation
 # Prefer nawk over mawk and mawk over awk
