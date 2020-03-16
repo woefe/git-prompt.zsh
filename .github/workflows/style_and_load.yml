@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Check against .editorconfig
       run: |
-        curl -L https://github.com/editorconfig-checker/editorconfig-checker/releases/download/2.0.3/ec-linux-amd64.tar.gz | tar -xzf - -C /
+        curl -L https://github.com/editorconfig-checker/editorconfig-checker/releases/download/2.0.3/ec-linux-amd64.tar.gz | sudo tar -xzf - -C /
         ec-linux-amd64 -exclude .git
 
     - name: Check line length
@@ -27,5 +27,4 @@ jobs:
     - name: Load prompt
       run: |
         sudo apt-get install -y zsh
-        zsh -f
-        source git-prompt.zsh
+        zsh -f -c 'source git-prompt.zsh; print -P $(_zsh_git_prompt_git_status)'
