@@ -31,11 +31,15 @@ PROMPT+='$(gitprompt)'                 # Git status
 PROMPT+='$(gitprompt_secondary)'       # Git status secondary info
 PROMPT+=$'\n┗╸'                        # Newline
 
+_WPROMPT_END='%(?.%(!.%F{white}❯%F{yellow}❯%F{red}.%F{blue}❯%F{cyan}❯%F{green})❯%f.%F{red}❯❯❯%f) '
 # Vi mode indicator, if github.com/woefe/vi-mode.zsh is loaded
 if (( $+functions[vi_mode_status] )); then
+    VI_INSERT_MODE_INDICATOR=$_WPROMPT_END
+    VI_NORMAL_MODE_INDICATOR=${_WPROMPT_END//❯/•}
+
     PROMPT+='$(vi_mode_status)'
 else
-    PROMPT+='%(?.%F{blue}❯%f%F{cyan}❯%f%F{green}❯%f.%F{red}❯❯❯%f) '
+    PROMPT+=$_WPROMPT_END
 fi
 
 
