@@ -92,6 +92,12 @@ After you have found a configuration that you like, source it in your `.zshrc`.
 
 source examples/default.zsh
 ```
+#### Compact
+```zsh
+# ../git-prompt.zsh [master↑1|●1✚1…1]❯
+
+source examples/compact.zsh
+```
 
 #### Multi-line prompt
 ```zsh
