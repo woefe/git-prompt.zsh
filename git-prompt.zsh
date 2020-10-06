@@ -77,7 +77,7 @@ function _zsh_git_prompt_git_status() {
             c=$(command git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
             [[ -n "$c" ]] && echo "# stash.count $c"
         )
-        command git --no-optional-locks status --branch --porcelain=v2 2>&1 \
+        GIT_OPTIONAL_LOCKS=0 command git status --branch --porcelain=v2 2>&1 \
             || echo "fatal: git command failed"
     } | $ZSH_GIT_PROMPT_AWK_CMD \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
