@@ -116,6 +116,17 @@ source examples/multiline.zsh
 source examples/rprompt.zsh
 ```
 
+#### bash-git-prompt mimic
+This example intends to mimic the [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt) infomative git prompt for bash.
+```zsh
+# Preview:
+# ~/workspace/git-prompt.zsh [master|✚1…1]
+# 10:24 $ 
+
+# ~/workspace/git-prompt.zsh [master|↑1↓1…1⚑1]
+# 10:24 $ 
+```
+
 #### [Pure](https://github.com/sindresorhus/pure) clone
 This clone of the Pure prompt has support for Python virtualenvs, but none of the timing features or a vi mode.
 If you are using [fzf](https://github.com/junegunn/fzf), source the example after sourcing fzf's keybindings.
