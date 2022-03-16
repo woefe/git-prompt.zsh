@@ -99,6 +99,13 @@ source examples/default.zsh
 source examples/compact.zsh
 ```
 
+#### Compact without full working directory
+```zsh
+# git-prompt.zsh master↑1|●1✚1…1❯
+
+source examples/compact-short.zsh
+```
+
 #### Multi-line prompt
 ```zsh
 # Preview:
