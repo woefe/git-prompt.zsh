@@ -28,6 +28,11 @@ autoload -U colors && colors
 : "${ZSH_GIT_PROMPT_NO_ASYNC=""}"
 : "${ZSH_GIT_PROMPT_FORCE_BLANK=""}"
 : "${ZSH_GIT_PROMPT_AWK_CMD=""}"
+: "${ZSH_GIT_PROMPT_SHOW_COUNT_UNMERGED="1"}"
+: "${ZSH_GIT_PROMPT_SHOW_COUNT_STAGED="1"}"
+: "${ZSH_GIT_PROMPT_SHOW_COUNT_UNSTAGED="1"}"
+: "${ZSH_GIT_PROMPT_SHOW_COUNT_UNTRACKED="1"}"
+: "${ZSH_GIT_PROMPT_SHOW_COUNT_STASHED="1"}"
 
 # Theming
 : "${ZSH_THEME_GIT_PROMPT_PREFIX="["}"
@@ -98,6 +103,11 @@ function _zsh_git_prompt_git_status() {
         -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
         -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
         -v RC="%{$reset_color%}" \
+        -v SHOW_COUNT_UNMERGED="${ZSH_GIT_PROMPT_SHOW_COUNT_UNMERGED}" \
+        -v SHOW_COUNT_STAGED="${ZSH_GIT_PROMPT_SHOW_COUNT_STAGED}" \
+        -v SHOW_COUNT_UNSTAGED="${ZSH_GIT_PROMPT_SHOW_COUNT_UNSTAGED}" \
+        -v SHOW_COUNT_UNTRACKED="${ZSH_GIT_PROMPT_SHOW_COUNT_UNTRACKED}" \
+        -v SHOW_COUNT_STASHED="${ZSH_GIT_PROMPT_SHOW_COUNT_STASHED}" \
         '
             BEGIN {
                 ORS = "";
@@ -204,31 +214,41 @@ function _zsh_git_prompt_git_status() {
 
                 if (unmerged > 0) {
                     print UNMERGED;
-                    print unmerged;
+                    if (SHOW_COUNT_UNMERGED == 1) {
+                        print unmerged;
+                    }
                     print RC;
                 }
 
                 if (staged > 0) {
                     print STAGED;
-                    print staged;
+                    if (SHOW_COUNT_STAGED == 1) {
+                        print staged;
+                    }
                     print RC;
                 }
 
                 if (unstaged > 0) {
                     print UNSTAGED;
-                    print unstaged;
+                    if (SHOW_COUNT_UNSTAGED == 1) {
+                        print unstaged;
+                    }
                     print RC;
                 }
 
                 if (untracked > 0) {
                     print UNTRACKED;
-                    print untracked;
+                    if (SHOW_COUNT_UNTRACKED == 1) {
+                        print untracked;
+                    }
                     print RC;
                 }
 
                 if (stashed > 0) {
                     print STASHED;
-                    print stashed;
+                    if (SHOW_COUNT_STASHED == 1) {
+                        print stashed;
+                    }
                     print RC;
                 }
 
