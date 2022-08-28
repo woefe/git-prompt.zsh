@@ -308,11 +308,11 @@ function _zsh_git_prompt_async_request() {
     # Fork a process to fetch the git status and open a pipe to read from it
     exec {_ZSH_GIT_PROMPT_ASYNC_FD}< <(
         # Tell parent process our pid
-        echo $sysparams[pid]
+        builtin echo $sysparams[pid]
 
         _zsh_git_prompt_git_status
         [[ -n "$ZSH_GIT_PROMPT_ENABLE_SECONDARY" ]] \
-            && echo -n "##secondary##" \
+            && builtin echo -n "##secondary##" \
             && _zsh_git_prompt_git_status_secondary
     )
 
