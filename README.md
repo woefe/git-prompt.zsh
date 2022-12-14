@@ -272,3 +272,29 @@ time ZSH_GIT_PROMPT_AWK_CMD=awk zsh -f -c '
     Executing any command or simply pressing enter will fix the issue.
 * In large repositories the prompt might slow down, because Git has to find untracked files.
     See `man git-status`, Section `--untracked-files` for possible options to speed things up.
+
+### Extra
+
+Add active python virtual environment name as prefix to git prompt.
+
+
+#### Manual installation
+Clone this repo or download the [git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) file.
+Then source it in your `.zshrc`. For example:
+
+```bash
+mkdir -p ~/.zsh
+git clone --depth=1 https://github.com/woefe/git-prompt.zsh ~/.zsh/git-prompt.zsh
+echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
+echo "source ~/.zsh/git-prompt.zsh/python-virtual-environment-prompt.zsh" >> .zshrc
+
+# Install an example configuration of git prompt with active python virtual environment as prefix
+echo "source ~/.zsh/git-prompt.zsh/examples/multilinewithvenv.zsh" >> .zshrc
+```
+
+#### Preview
+If a python virtual environment named ```my_venv``` is active in a project dir named ```my_project```:
+```bash
+┏╸(my_venv) ~/workspace/my_project · ⎇ main ‹●1357›
+┗╸❯❯❯ 
+```
