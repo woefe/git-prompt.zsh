@@ -279,8 +279,8 @@ Add active python virtual environment name as prefix to git prompt.
 
 
 #### Manual installation
-Clone this repo or download the [git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) file.
-Then source it in your `.zshrc`. For example:
+Clone this repo or download the ```git-prompt.zsh``` and ```python-virtual-environment-prompt.zsh``` file.
+Then source these in your `.zshrc`. For example:
 
 ```bash
 mkdir -p ~/.zsh
