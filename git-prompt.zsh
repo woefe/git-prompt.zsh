@@ -186,6 +186,11 @@ function _zsh_git_prompt_git_status() {
                         print UPSTREAM_SUFFIX;
                     }
                 }
+                else {
+                    if (UPSTREAM_TYPE == "localsymbol") {
+                        print UPSTREAM_SYMBOL;
+                    }
+                }
                 print RC;
 
                 if (behind < 0) {
