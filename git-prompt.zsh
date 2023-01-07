@@ -37,6 +37,7 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH_PREFIX="${ZSH_THEME_GIT_PROMPT_BRANCH}"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH_SUFFIX=""}"
+: "${ZSH_THEME_GIT_PROMPT_BEHIND_AHEAD_PREFIX=""}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"}"
@@ -88,6 +89,7 @@ function _zsh_git_prompt_git_status() {
         -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
         -v BRANCH_PREFIX="$ZSH_THEME_GIT_PROMPT_BRANCH_PREFIX" \
         -v BRANCH_SUFFIX="$ZSH_THEME_GIT_PROMPT_BRANCH_SUFFIX" \
+        -v BEHIND_AHEAD_PREFIX="$ZSH_THEME_GIT_PROMPT_BEHIND_AHEAD_PREFIX" \
         -v UPSTREAM_TYPE="$ZSH_GIT_PROMPT_SHOW_UPSTREAM" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
@@ -198,12 +200,16 @@ function _zsh_git_prompt_git_status() {
                 print RC;
 
                 if (behind < 0) {
+                    print BEHIND_AHEAD_PREFIX;
                     print BEHIND;
                     printf "%d", behind * -1;
                     print RC;
                 }
 
                 if (ahead > 0) {
+                    if (behind == 0) {
+                        print BEHIND_AHEAD_PREFIX;
+                    }
                     print AHEAD;
                     printf "%d", ahead;
                     print RC;
