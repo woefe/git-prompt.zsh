@@ -35,6 +35,8 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_SEPARATOR="|"}"
 : "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
+: "${ZSH_THEME_GIT_PROMPT_BRANCH_PREFIX="${ZSH_THEME_GIT_PROMPT_BRANCH}"}"
+: "${ZSH_THEME_GIT_PROMPT_BRANCH_SUFFIX=""}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"}"
@@ -84,7 +86,8 @@ function _zsh_git_prompt_git_status() {
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
         -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
-        -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
+        -v BRANCH_PREFIX="$ZSH_THEME_GIT_PROMPT_BRANCH_PREFIX" \
+        -v BRANCH_SUFFIX="$ZSH_THEME_GIT_PROMPT_BRANCH_SUFFIX" \
         -v UPSTREAM_TYPE="$ZSH_GIT_PROMPT_SHOW_UPSTREAM" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
@@ -170,9 +173,10 @@ function _zsh_git_prompt_git_status() {
                     print DETACHED;
                     print substr(oid, 0, 7);
                 } else {
-                    print BRANCH;
+                    print BRANCH_PREFIX;
                     gsub("%", "%%", head);
                     print head;
+                    print BRANCH_SUFFIX;
                 }
                 print RC;
 
