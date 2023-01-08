@@ -34,7 +34,7 @@ Load this example: `source examples/bashgitprompt.zsh`
 
 ```
 ~/workspace/hello_world [master ⟳ ↑1|●1✚1…2⚑1]
-17:18 $
+20:46 $
 ```
 
 
@@ -101,7 +101,7 @@ Load this example: `source examples/rprompt.zsh`
 The wprompt example is similar to the multi-line and Pure examples, but with optional
 [vi-mode](https://github.com/woefe/vi-mode.zsh) and the secondary prompt enabled.
 
-- Depends on [Font Awesome](https://fontawesome.com/) for the Python symbol
+- Depends on [Font Awesome](https://fontawesome.com/)
 - Optionally depends on [vi-mode](https://github.com/woefe/vi-mode.zsh)
 - Source this example after fzf and after loading
 [vi-mode](https://github.com/woefe/vi-mode.zsh)
@@ -112,6 +112,6 @@ your shell, because this prompt will always print a newline between prompts.
 Load this example: `source examples/wprompt.zsh`
 
 ```
-┏╸~/workspace/hello_world · ⎇ master⟳ ↑1 ‹●1✚1…2›
+┏╸~/workspace/hello_world · ⎇ master↑1 · ●1✚1…2
 ┗╸❯❯❯
 ```

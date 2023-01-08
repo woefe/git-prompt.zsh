@@ -3,7 +3,7 @@
 #  The wprompt example is similar to the multi-line and Pure examples, but with optional
 #  [vi-mode](https://github.com/woefe/vi-mode.zsh) and the secondary prompt enabled.
 #
-#  - Depends on [Font Awesome](https://fontawesome.com/) for the Python symbol
+#  - Depends on [Font Awesome](https://fontawesome.com/)
 #  - Optionally depends on [vi-mode](https://github.com/woefe/vi-mode.zsh)
 #  - Source this example after fzf and after loading
 #    [vi-mode](https://github.com/woefe/vi-mode.zsh)
@@ -13,25 +13,26 @@
 
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
-ZSH_GIT_PROMPT_SHOW_UPSTREAM="symbol"
+ZSH_GIT_PROMPT_SHOW_UPSTREAM="notracking"
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" · "
-ZSH_THEME_GIT_PROMPT_SUFFIX="›"
-ZSH_THEME_GIT_PROMPT_SEPARATOR=" ‹"
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_SEPARATOR=" · "
 ZSH_THEME_GIT_PROMPT_BRANCH="⎇ %{$fg_bold[cyan]%}"
-ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "
+ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[green]%} "
+ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING="%{$fg_bold[red]%}!"
 ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"
 ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"
 ZSH_THEME_GIT_PROMPT_DETACHED="@%{$fg_no_bold[cyan]%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_no_bold[blue]%}↓"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_no_bold[blue]%}↑"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_no_bold[red]%}↓"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_no_bold[green]%}↑"
 ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
 ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}●"
 ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
-ZSH_THEME_GIT_PROMPT_TAGS_PREFIX=" · 🏷 "
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%} "
+ZSH_THEME_GIT_PROMPT_TAGS_PREFIX=" ·  "
 
 RPROMPT=''
 PROMPT=$'┏╸'
