@@ -114,6 +114,7 @@ ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
 ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
 ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "
+ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING="%{$fg_bold[red]%}!"
 ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"
 ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"
 ZSH_THEME_GIT_PROMPT_BEHIND="↓"
@@ -139,6 +140,9 @@ source path/to/git-prompt.zsh
 The prompt will show information about the remote branch, if `ZSH_GIT_PROMPT_SHOW_UPSTREAM` is set to `full` or `symbol`.
 The `full` option will print the full remote branch name enclosed by `ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX` and `ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX`.
 The `symbol` option prints only `ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL`.
+
+Furthermore, a warning symbol can be configured through `ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING` for the case where no remote is available.
+`ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING` can be set independently of `ZSH_GIT_PROMPT_SHOW_UPSTREAM`.
 
 ### Show number of stash entries
 The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.

@@ -36,6 +36,7 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_DETACHED="%{$fg_bold[cyan]%}:"}"
 : "${ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%}⟳ "}"
+: "${ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING=""}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX="%{$fg[red]%}(%{$fg[yellow]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX="%{$fg[red]%})"}"
 : "${ZSH_THEME_GIT_PROMPT_BEHIND="↓"}"
@@ -87,6 +88,7 @@ function _zsh_git_prompt_git_status() {
         -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
         -v UPSTREAM_TYPE="$ZSH_GIT_PROMPT_SHOW_UPSTREAM" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
+        -v UPSTREAM_NO_TRACKING="$ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
         -v UPSTREAM_SUFFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SUFFIX" \
         -v BEHIND="$ZSH_THEME_GIT_PROMPT_BEHIND" \
@@ -176,16 +178,17 @@ function _zsh_git_prompt_git_status() {
                 }
                 print RC;
 
-                if (upstream != "") {
+                if (upstream == "") {
+                    print UPSTREAM_NO_TRACKING;
+                } else if (UPSTREAM_TYPE == "symbol") {
+                    print UPSTREAM_SYMBOL;
+                } else if (UPSTREAM_TYPE == "full") {
+                    print UPSTREAM_PREFIX;
                     gsub("%", "%%", upstream);
-                    if (UPSTREAM_TYPE == "symbol") {
-                        print UPSTREAM_SYMBOL;
-                    } else if (UPSTREAM_TYPE == "full") {
-                        print UPSTREAM_PREFIX;
-                        print upstream;
-                        print UPSTREAM_SUFFIX;
-                    }
+                    print upstream;
+                    print UPSTREAM_SUFFIX;
                 }
+
                 print RC;
 
                 if (behind < 0) {
