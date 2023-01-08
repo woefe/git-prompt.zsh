@@ -1,5 +1,7 @@
 # Name: [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt) clone
-# Description: This example mimics the [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt) informative git prompt for bash.
+# Description:
+#  This example mimics the [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
+#  informative git prompt for bash.
 
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ZSH_GIT_PROMPT_SHOW_STASH=1

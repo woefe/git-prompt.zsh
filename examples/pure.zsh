@@ -1,8 +1,11 @@
 # Name: [Pure](https://github.com/sindresorhus/pure) clone
 # Description:
-#  This clone of the Pure prompt has support for Python virtualenvs, but none of the timing features or a vi mode.
-#  If you are using [fzf](https://github.com/junegunn/fzf), source the example after sourcing fzf's keybindings.
-#  If you want to try other examples again after sourcing the Pure example, you might have to restart your shell, because this prompt will always print a newline between prompts.
+#  This clone of the Pure prompt has support for Python virtualenvs, but none of the timing
+#  features or a vi mode. If you are using [fzf](https://github.com/junegunn/fzf), source the
+#  example after sourcing fzf's keybindings.
+#
+#  If you want to try other examples again after sourcing the Pure example, you might have to
+#  restart your shell, because this prompt will always print a newline between prompts.
 
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ZSH_GIT_PROMPT_SHOW_UPSTREAM="no"
