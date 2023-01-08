@@ -21,6 +21,16 @@ examples/print_examples.sh
 
 <!-- truncate here before generating examples -->
 
+### Ascii
+A prompt using only ASCII characters.
+
+Load this example: `source examples/ascii.zsh`
+
+```
+..hack-tarballers-ascii o1+2..1>
+```
+
+
 ### [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt) clone
 
 This example mimics the [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)
