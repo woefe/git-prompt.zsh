@@ -1,3 +1,6 @@
+# Name: Default
+# Description: Same as shown in [screenshot.svg](../screenshot.svg).
+
 ZSH_GIT_PROMPT_SHOW_UPSTREAM="no"
 
 ZSH_THEME_GIT_PROMPT_PREFIX="["

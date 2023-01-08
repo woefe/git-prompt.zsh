@@ -1,3 +1,13 @@
+# Name: Woefe's prompt (wprompt)
+# Description:
+#  The wprompt example is similar to the multi-line and Pure examples, but with optional [vi-mode](https://github.com/woefe/vi-mode.zsh) and the secondary prompt enabled.
+#
+#  - Depends on [Font Awesome](https://fontawesome.com/) for the Python symbol
+#  - Optionally depends on [vi-mode](https://github.com/woefe/vi-mode.zsh)
+#  - Source this example after fzf and after loading [vi-mode](https://github.com/woefe/vi-mode.zsh)
+#
+#  If you want to try other examples again after sourcing this example, you might have to restart your shell, because this prompt will always print a newline between prompts.
+
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ZSH_GIT_PROMPT_ENABLE_SECONDARY=1
 ZSH_GIT_PROMPT_SHOW_UPSTREAM="symbol"
