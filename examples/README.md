@@ -1,5 +1,5 @@
 # git-prompt.zsh examples
-You can test the [configurations shown below](#examples) by souring the `.zsh` files from the examples directory.
+You can test the [configurations shown below](#examples) by sourcing the `.zsh` files from the examples directory.
 Once you have found a configuration that you like, source it in your `.zshrc`.
 
 ## Preview all examples directly in Zsh
@@ -7,12 +7,6 @@ Once you have found a configuration that you like, source it in your `.zshrc`.
 ```
 git clone https://github.com/woefe/git-prompt.zsh
 cd git-prompt.zsh
-
-# Modify some files
-touch test
-echo >> README.md
-git add README.md
-echo >> README.md
 
 examples/print_examples.sh
 ```
@@ -27,7 +21,7 @@ A prompt using only ASCII characters.
 Load this example: `source examples/ascii.zsh`
 
 ```
-..hack-tarballers-ascii o1+2..1>
+../hello_world master^1 o1+1..2>
 ```
 
 
@@ -39,8 +33,8 @@ informative git prompt for bash.
 Load this example: `source examples/bashgitprompt.zsh`
 
 ```
-~/workspace/git-prompt.zsh [refactor-examples ⟳ |●1✚3…1⚑1]
-13:44 $
+~/workspace/hello_world [master ⟳ ↑1|●1✚1…2⚑1]
+17:18 $
 ```
 
 
@@ -50,7 +44,7 @@ Load this example: `source examples/bashgitprompt.zsh`
 Load this example: `source examples/compact.zsh`
 
 ```
-...zsh refactor-examples|●1✚3…1❯
+..e/hello_world master↑1|●1✚1…2❯
 ```
 
 
@@ -60,7 +54,7 @@ Same as shown in [screenshot.svg](../screenshot.svg).
 Load this example: `source examples/default.zsh`
 
 ```
-..[refactor-examples|●1✚3…1] ❯❯❯
+..lo_world [master↑1|●1✚1…2] ❯❯❯
 ```
 
 
@@ -70,7 +64,7 @@ Load this example: `source examples/default.zsh`
 Load this example: `source examples/multiline.zsh`
 
 ```
-┏╸~/workspace/git-prompt.zsh · ⎇ refactor-examples ⤳ origin/refactor-examples ‹●1✚3…1›
+┏╸~/workspace/hello_world · ⎇ master ⤳ origin/master↑1 ‹●1✚1…2›
 ┗╸❯❯❯
 ```
 
@@ -87,7 +81,7 @@ restart your shell, because this prompt will always print a newline between prom
 Load this example: `source examples/pure.zsh`
 
 ```
-~/workspace/git-prompt.zsh refactor-examples ●1✚3…1
+~/workspace/hello_world master↑1 ●1✚1…2
 ❯
 ```
 
@@ -98,7 +92,7 @@ Load this example: `source examples/pure.zsh`
 Load this example: `source examples/rprompt.zsh`
 
 ```
-~/workspace/git-prompt.zsh ≻≻≻         ≺ refactor-examples⟳  ●1✚3…1
+~/workspace/hello_world ≻≻≻         ≺ master⟳ ↑1 ●1✚1…2
 ```
 
 
@@ -118,6 +112,6 @@ your shell, because this prompt will always print a newline between prompts.
 Load this example: `source examples/wprompt.zsh`
 
 ```
-┏╸~/workspace/git-prompt.zsh · ⎇ refactor-examples⟳  ‹●1✚3…1›
+┏╸~/workspace/hello_world · ⎇ master⟳ ↑1 ‹●1✚1…2›
 ┗╸❯❯❯
 ```
