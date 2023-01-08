@@ -1,3 +1,5 @@
+# Name: Git status on the right
+
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ZSH_GIT_PROMPT_SHOW_UPSTREAM="symbol"
 

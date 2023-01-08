@@ -32,6 +32,19 @@ The structure of the prompt (in the default configuration) is the following:
     You can check if your installation is compatible by executing `git status --branch --porcelain=v2` inside a Git repository.
 * [awk](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html), which is most certainly preinstalled on any \*nix system
 
+### Manual installation
+Clone this repo or download the [git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) file.
+Then source it in your `.zshrc`. For example:
+
+```bash
+mkdir -p ~/.zsh
+git clone --depth=1 https://github.com/woefe/git-prompt.zsh ~/.zsh/git-prompt.zsh
+echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
+
+# Optional: install an example configuration
+echo "source ~/.zsh/git-prompt.zsh/examples/pure.zsh" >> .zshrc
+```
+
 ### [Zplug](https://github.com/zplug/zplug)
 Either install the default prompt (see [Examples](#examples) section below) with
 ```
@@ -52,25 +65,13 @@ zplugin load woefe/git-prompt.zsh
 Note that this method does not work if you want to disable the asynchronous rendering.
 
 ### Arch Linux
-Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR. Maintained by [Felixoid](https://github.com/Felixoid).
+Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR.
+Maintained by [Felixoid](https://github.com/Felixoid).
 
 ### FreeBSD
 Install the [git-prompt.zsh](https://www.freshports.org/shells/git-prompt.zsh/) package with
 ```
 pkg install git-prompt.zsh
-```
-
-### Manual installation
-Clone this repo or download the [git-prompt.zsh](https://raw.githubusercontent.com/woefe/zsh-git-prompt/master/git-prompt.zsh) file.
-Then source it in your `.zshrc`. For example:
-
-```bash
-mkdir -p ~/.zsh
-git clone --depth=1 https://github.com/woefe/git-prompt.zsh ~/.zsh/git-prompt.zsh
-echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
-
-# Optional: install an example configuration
-echo "source ~/.zsh/git-prompt.zsh/examples/pure.zsh" >> .zshrc
 ```
 
 ## Customization
@@ -82,78 +83,7 @@ Some example `PROMPT` configurations are given below.
 You can find more information on how to configure the `PROMPT` in [Zsh's online documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) or the `zshmisc` manpage, section "SIMPLE PROMPT ESCAPES".
 
 ### Examples
-You can try these configurations by souring the `.zsh` files from the [examples](./examples) directory.
-After you have found a configuration that you like, source it in your `.zshrc`.
-
-#### Default (same as in title)
-```zsh
-# Preview:
-# ../git-prompt.zsh [master↑1|●1✚1…1] ❯❯❯
-
-source examples/default.zsh
-```
-#### Compact
-```zsh
-# ../git-prompt.zsh master↑1|●1✚1…1❯
-
-source examples/compact.zsh
-```
-
-#### Multi-line prompt
-```zsh
-# Preview:
-# ┏╸130 · ~/workspace/git-prompt.zsh · ⎇ master↑1 ‹●1✚1…1›
-# ┗╸❯❯❯
-
-source examples/multiline.zsh
-```
-
-#### Git status on the right
-```zsh
-# Preview:
-# ~/workspace/git-prompt.zsh ≻≻≻                                ≺ master↑1|●1✚1…1
-
-source examples/rprompt.zsh
-```
-
-#### [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt) clone
-This example mimics the [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt) informative git prompt for bash.
-```zsh
-# ~/workspace/git-prompt.zsh [master|↑1↓1…1⚑1]
-# 10:24 $
-
-source examples/bashgitprompt.zsh
-```
-
-#### [Pure](https://github.com/sindresorhus/pure) clone
-This clone of the Pure prompt has support for Python virtualenvs, but none of the timing features or a vi mode.
-If you are using [fzf](https://github.com/junegunn/fzf), source the example after sourcing fzf's keybindings.
-```zsh
-# Preview:
-#
-# ~/workspace/git-prompt.zsh master↑3 ✚2…1
-# ❯
-
-source examples/pure.zsh
-```
-If you want to try other examples again after sourcing the Pure example, you might have to restart your shell, because this prompt will always print a newline between prompts.
-
-#### Woefe's prompt (wprompt)
-The wprompt example is similar to the multi-line and Pure examples, but with optional [vi-mode](https://github.com/woefe/vi-mode.zsh) and the secondary prompt enabled.
-
-- Depends on [Font Awesome](https://fontawesome.com/) for the Python symbol
-- Optionally depends on [vi-mode](https://github.com/woefe/vi-mode.zsh)
-- Source this example after fzf and after loading [vi-mode](https://github.com/woefe/vi-mode.zsh)
-
-```zsh
-# Preview:
-#
-# ┏╸~/workspace/ytcc ·  ytcc · ⎇ master ‹✔›
-# ┗╸❯❯❯
-
-source examples/wprompt.zsh
-```
-If you want to try other examples again after sourcing this example, you might have to restart your shell, because this prompt will always print a newline between prompts.
+See [examples/README.md](./examples/README.md) for more details.
 
 ### Enable secondary prompt
 The prompt comes with a secondary function that shows the tags that HEAD points to.
