@@ -146,7 +146,7 @@ Furthermore, a warning symbol can be configured through `ZSH_THEME_GIT_PROMPT_UP
 
 ### Show number of stash entries
 The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
-Enabling this will execute another Git command every time a new prompt is shown!
+On Git versions older than 2.35.0 this will execute another Git command every time a new prompt is shown!
 To enable stash entries add the following line to your `.zshrc`:
 
 ```bash
@@ -203,6 +203,6 @@ time ZSH_GIT_PROMPT_AWK_CMD=awk zsh -f -c '
 ## Known issues
 * If the current working directory is not a Git repository and some external application initializes a new repository in the same directory, the Git prompt will not be shown immediately.
     Also, updates made by external programs or another shell do not show up immediately.
-    Executing any command or simply pressing enter will fix the issue.
+    Executing any command or simply pressing enter to draw a new prompt will fix the issue.
 * In large repositories the prompt might slow down, because Git has to find untracked files.
     See `man git-status`, Section `--untracked-files` for possible options to speed things up.

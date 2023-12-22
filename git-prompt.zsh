@@ -71,16 +71,29 @@ setopt PROMPT_SUBST
 (( $+commands[nawk] ))  &&  : "${ZSH_GIT_PROMPT_AWK_CMD:=nawk}"
                             : "${ZSH_GIT_PROMPT_AWK_CMD:=awk}"
 
-function _zsh_git_prompt_git_status() {
-    emulate -L zsh
-    {
+# Use --show-stash for git versions newer than 2.35.0
+_zsh_git_prompt_git_version=$(command git version)
+if [[ "${_zsh_git_prompt_git_version:12}" == 2.<35->.<-> ]]; then
+    _zsh_git_prompt_git_cmd() {
+        GIT_OPTIONAL_LOCKS=0 command git status --show-stash --branch --porcelain=v2 2>&1 \
+            || echo "fatal: git command failed"
+    }
+else
+    _zsh_git_prompt_git_cmd() {
         [[ -n "$ZSH_GIT_PROMPT_SHOW_STASH" ]] && (
             c=$(command git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
-            [[ -n "$c" ]] && echo "# stash.count $c"
+            [[ -n "$c" ]] && echo "# stash $c"
         )
         GIT_OPTIONAL_LOCKS=0 command git status --branch --porcelain=v2 2>&1 \
             || echo "fatal: git command failed"
-    } | $ZSH_GIT_PROMPT_AWK_CMD \
+    }
+fi
+unset _zsh_git_prompt_git_version
+
+
+function _zsh_git_prompt_git_status() {
+    emulate -L zsh
+    _zsh_git_prompt_git_cmd | $ZSH_GIT_PROMPT_AWK_CMD \
         -v PREFIX="$ZSH_THEME_GIT_PROMPT_PREFIX" \
         -v SUFFIX="$ZSH_THEME_GIT_PROMPT_SUFFIX" \
         -v SEPARATOR="$ZSH_THEME_GIT_PROMPT_SEPARATOR" \
@@ -98,6 +111,7 @@ function _zsh_git_prompt_git_status() {
         -v UNSTAGED="$ZSH_THEME_GIT_PROMPT_UNSTAGED" \
         -v UNTRACKED="$ZSH_THEME_GIT_PROMPT_UNTRACKED" \
         -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
+        -v SHOW_STASH="$ZSH_GIT_PROMPT_SHOW_STASH" \
         -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
         -v RC="%{$reset_color%}" \
         '
@@ -164,7 +178,7 @@ function _zsh_git_prompt_git_status() {
                 }
             }
 
-            $2 == "stash.count" {
+            $2 == "stash" {
                 stashed = $3;
             }
 
@@ -215,7 +229,7 @@ function _zsh_git_prompt_git_status() {
                     prompt_element(UNTRACKED, untracked);
                 }
 
-                if (stashed > 0) {
+                if (stashed > 0 && SHOW_STASH != "") {
                     prompt_element(STASHED, stashed);
                 }
 
