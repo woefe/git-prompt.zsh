@@ -117,6 +117,14 @@ function _zsh_git_prompt_git_status() {
                 stashed = 0;
             }
 
+            function prompt_element(prefix, content, suffix) {
+                print(prefix);
+                gsub("%", "%%", content);
+                print(content);
+                print(suffix);
+                print(RC);
+            }
+
             $1 == "fatal:" {
                 fatal = 1;
             }
@@ -165,83 +173,57 @@ function _zsh_git_prompt_git_status() {
                     exit(1);
                 }
 
-                print PREFIX;
-                print RC;
+                prompt_element(PREFIX);
 
                 if (head == "(detached)") {
-                    print DETACHED;
-                    print substr(oid, 0, 7);
+                    prompt_element(DETACHED, substr(oid, 0, 7));
                 } else {
-                    print BRANCH;
-                    gsub("%", "%%", head);
-                    print head;
+                    prompt_element(BRANCH, head);
                 }
-                print RC;
 
                 if (upstream == "") {
-                    print UPSTREAM_NO_TRACKING;
+                    prompt_element(UPSTREAM_NO_TRACKING);
                 } else if (UPSTREAM_TYPE == "symbol") {
-                    print UPSTREAM_SYMBOL;
+                    prompt_element(UPSTREAM_SYMBOL);
                 } else if (UPSTREAM_TYPE == "full") {
-                    print UPSTREAM_PREFIX;
-                    gsub("%", "%%", upstream);
-                    print upstream;
-                    print UPSTREAM_SUFFIX;
+                    prompt_element(UPSTREAM_PREFIX, upstream, UPSTREAM_SUFFIX);
                 }
 
-                print RC;
-
                 if (behind < 0) {
-                    print BEHIND;
-                    printf "%d", behind * -1;
-                    print RC;
+                    prompt_element(BEHIND, behind * -1);
                 }
 
                 if (ahead > 0) {
-                    print AHEAD;
-                    printf "%d", ahead;
-                    print RC;
+                    prompt_element(AHEAD, ahead * 1);
                 }
 
-                print SEPARATOR;
+                prompt_element(SEPARATOR);
 
                 if (unmerged > 0) {
-                    print UNMERGED;
-                    print unmerged;
-                    print RC;
+                    prompt_element(UNMERGED, unmerged);
                 }
 
                 if (staged > 0) {
-                    print STAGED;
-                    print staged;
-                    print RC;
+                    prompt_element(STAGED, staged);
                 }
 
                 if (unstaged > 0) {
-                    print UNSTAGED;
-                    print unstaged;
-                    print RC;
+                    prompt_element(UNSTAGED, unstaged);
                 }
 
                 if (untracked > 0) {
-                    print UNTRACKED;
-                    print untracked;
-                    print RC;
+                    prompt_element(UNTRACKED, untracked);
                 }
 
                 if (stashed > 0) {
-                    print STASHED;
-                    print stashed;
-                    print RC;
+                    prompt_element(STASHED, stashed);
                 }
 
                 if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
-                    print CLEAN;
-                    print RC;
+                    prompt_element(CLEAN);
                 }
 
-                print SUFFIX;
-                print RC;
+                prompt_element(SUFFIX);
             }
         '
 }
