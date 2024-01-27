@@ -24,6 +24,8 @@ autoload -U colors && colors
 # Settings
 : "${ZSH_GIT_PROMPT_SHOW_UPSTREAM=""}"
 : "${ZSH_GIT_PROMPT_SHOW_STASH=""}"
+: "${ZSH_GIT_PROMPT_SHOW_TRACKING_COUNTS="1"}"
+: "${ZSH_GIT_PROMPT_SHOW_LOCAL_COUNTS="1"}"
 : "${ZSH_GIT_PROMPT_ENABLE_SECONDARY=""}"
 : "${ZSH_GIT_PROMPT_NO_ASYNC=""}"
 : "${ZSH_GIT_PROMPT_FORCE_BLANK=""}"
@@ -100,6 +102,8 @@ function _zsh_git_prompt_git_status() {
         -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
         -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
         -v UPSTREAM_TYPE="$ZSH_GIT_PROMPT_SHOW_UPSTREAM" \
+        -v SHOW_TRACKING_COUNTS="$ZSH_GIT_PROMPT_SHOW_TRACKING_COUNTS" \
+        -v SHOW_LOCAL_COUNTS="$ZSH_GIT_PROMPT_SHOW_LOCAL_COUNTS" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
         -v UPSTREAM_NO_TRACKING="$ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
@@ -204,33 +208,58 @@ function _zsh_git_prompt_git_status() {
                 }
 
                 if (behind < 0) {
-                    prompt_element(BEHIND, behind * -1);
+                    if (SHOW_TRACKING_COUNTS == "1") {
+                        count = behind * -1;
+                    } else {
+                        count = ""
+                    }
+                    prompt_element(BEHIND, count);
                 }
 
                 if (ahead > 0) {
-                    prompt_element(AHEAD, ahead * 1);
+                    if (SHOW_TRACKING_COUNTS == "1") {
+                        count = ahead * 1;
+                    }
+                    prompt_element(AHEAD, count);
                 }
 
                 prompt_element(SEPARATOR);
 
                 if (unmerged > 0) {
-                    prompt_element(UNMERGED, unmerged);
+                    if (SHOW_LOCAL_COUNTS == "1") {
+                        count = unmerged;
+                    } else {
+                        count = ""
+                    }
+                    prompt_element(UNMERGED, count);
                 }
 
                 if (staged > 0) {
-                    prompt_element(STAGED, staged);
+                    if (SHOW_LOCAL_COUNTS == "1") {
+                        count = staged;
+                    }
+                    prompt_element(STAGED, count);
                 }
 
                 if (unstaged > 0) {
-                    prompt_element(UNSTAGED, unstaged);
+                    if (SHOW_LOCAL_COUNTS == "1") {
+                        count = unstaged;
+                    }
+                    prompt_element(UNSTAGED, count);
                 }
 
                 if (untracked > 0) {
-                    prompt_element(UNTRACKED, untracked);
+                    if (SHOW_LOCAL_COUNTS == "1") {
+                        count = untracked;
+                    }
+                    prompt_element(UNTRACKED, count);
                 }
 
                 if (stashed > 0 && SHOW_STASH != "") {
-                    prompt_element(STASHED, stashed);
+                    if (SHOW_LOCAL_COUNTS == "1") {
+                        count = stashed;
+                    }
+                    prompt_element(STASHED, count);
                 }
 
                 if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
