@@ -143,6 +143,24 @@ function _zsh_git_prompt_git_status() {
                 print(RC);
             }
 
+            function count_element(prefix, count, show_count) {
+                content = "";
+                if (show_count) {
+                    content = count;
+                }
+                if (count > 0) {
+                    prompt_element(prefix, content);
+                }
+            }
+
+            function local_element(prefix, count) {
+                count_element(prefix, count, SHOW_LOCAL_COUNTS)
+            }
+
+            function tracking_element(prefix, count) {
+                count_element(prefix, count, SHOW_TRACKING_COUNTS)
+            }
+
             $1 == "fatal:" {
                 fatal = 1;
             }
@@ -207,59 +225,22 @@ function _zsh_git_prompt_git_status() {
                     prompt_element(UPSTREAM_PREFIX, upstream, UPSTREAM_SUFFIX);
                 }
 
-                if (behind < 0) {
-                    if (SHOW_TRACKING_COUNTS == "1") {
-                        count = behind * -1;
-                    } else {
-                        count = ""
-                    }
-                    prompt_element(BEHIND, count);
-                }
+                tracking_element(BEHIND, behind * -1);
 
-                if (ahead > 0) {
-                    if (SHOW_TRACKING_COUNTS == "1") {
-                        count = ahead * 1;
-                    }
-                    prompt_element(AHEAD, count);
-                }
+                tracking_element(AHEAD, ahead * 1);
 
                 prompt_element(SEPARATOR);
 
-                if (unmerged > 0) {
-                    if (SHOW_LOCAL_COUNTS == "1") {
-                        count = unmerged;
-                    } else {
-                        count = ""
-                    }
-                    prompt_element(UNMERGED, count);
-                }
+                local_element(UNMERGED, unmerged);
 
-                if (staged > 0) {
-                    if (SHOW_LOCAL_COUNTS == "1") {
-                        count = staged;
-                    }
-                    prompt_element(STAGED, count);
-                }
+                local_element(STAGED, staged);
 
-                if (unstaged > 0) {
-                    if (SHOW_LOCAL_COUNTS == "1") {
-                        count = unstaged;
-                    }
-                    prompt_element(UNSTAGED, count);
-                }
+                local_element(UNSTAGED, unstaged);
 
-                if (untracked > 0) {
-                    if (SHOW_LOCAL_COUNTS == "1") {
-                        count = untracked;
-                    }
-                    prompt_element(UNTRACKED, count);
-                }
+                local_element(UNTRACKED, untracked);
 
-                if (stashed > 0 && SHOW_STASH != "") {
-                    if (SHOW_LOCAL_COUNTS == "1") {
-                        count = stashed;
-                    }
-                    prompt_element(STASHED, count);
+                if (SHOW_STASH) {
+                    local_element(STASHED, stashed);
                 }
 
                 if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {
