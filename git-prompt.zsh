@@ -24,6 +24,8 @@ autoload -U colors && colors
 # Settings
 : "${ZSH_GIT_PROMPT_SHOW_UPSTREAM=""}"
 : "${ZSH_GIT_PROMPT_SHOW_STASH=""}"
+: "${ZSH_GIT_PROMPT_SHOW_TRACKING_COUNTS="1"}"
+: "${ZSH_GIT_PROMPT_SHOW_LOCAL_COUNTS="1"}"
 : "${ZSH_GIT_PROMPT_ENABLE_SECONDARY=""}"
 : "${ZSH_GIT_PROMPT_NO_ASYNC=""}"
 : "${ZSH_GIT_PROMPT_FORCE_BLANK=""}"
@@ -100,6 +102,8 @@ function _zsh_git_prompt_git_status() {
         -v DETACHED="$ZSH_THEME_GIT_PROMPT_DETACHED" \
         -v BRANCH="$ZSH_THEME_GIT_PROMPT_BRANCH" \
         -v UPSTREAM_TYPE="$ZSH_GIT_PROMPT_SHOW_UPSTREAM" \
+        -v SHOW_TRACKING_COUNTS="$ZSH_GIT_PROMPT_SHOW_TRACKING_COUNTS" \
+        -v SHOW_LOCAL_COUNTS="$ZSH_GIT_PROMPT_SHOW_LOCAL_COUNTS" \
         -v UPSTREAM_SYMBOL="$ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL" \
         -v UPSTREAM_NO_TRACKING="$ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING" \
         -v UPSTREAM_PREFIX="$ZSH_THEME_GIT_PROMPT_UPSTREAM_PREFIX" \
@@ -137,6 +141,24 @@ function _zsh_git_prompt_git_status() {
                 print(content);
                 print(suffix);
                 print(RC);
+            }
+
+            function count_element(prefix, count, show_count) {
+                content = "";
+                if (show_count) {
+                    content = count;
+                }
+                if (count > 0) {
+                    prompt_element(prefix, content);
+                }
+            }
+
+            function local_element(prefix, count) {
+                count_element(prefix, count, SHOW_LOCAL_COUNTS)
+            }
+
+            function tracking_element(prefix, count) {
+                count_element(prefix, count, SHOW_TRACKING_COUNTS)
             }
 
             $1 == "fatal:" {
@@ -203,34 +225,22 @@ function _zsh_git_prompt_git_status() {
                     prompt_element(UPSTREAM_PREFIX, upstream, UPSTREAM_SUFFIX);
                 }
 
-                if (behind < 0) {
-                    prompt_element(BEHIND, behind * -1);
-                }
+                tracking_element(BEHIND, behind * -1);
 
-                if (ahead > 0) {
-                    prompt_element(AHEAD, ahead * 1);
-                }
+                tracking_element(AHEAD, ahead * 1);
 
                 prompt_element(SEPARATOR);
 
-                if (unmerged > 0) {
-                    prompt_element(UNMERGED, unmerged);
-                }
+                local_element(UNMERGED, unmerged);
 
-                if (staged > 0) {
-                    prompt_element(STAGED, staged);
-                }
+                local_element(STAGED, staged);
 
-                if (unstaged > 0) {
-                    prompt_element(UNSTAGED, unstaged);
-                }
+                local_element(UNSTAGED, unstaged);
 
-                if (untracked > 0) {
-                    prompt_element(UNTRACKED, untracked);
-                }
+                local_element(UNTRACKED, untracked);
 
-                if (stashed > 0 && SHOW_STASH != "") {
-                    prompt_element(STASHED, stashed);
+                if (SHOW_STASH) {
+                    local_element(STASHED, stashed);
                 }
 
                 if (unmerged == 0 && staged == 0 && unstaged == 0 && untracked == 0) {

@@ -144,14 +144,20 @@ The `symbol` option prints only `ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL`.
 Furthermore, a warning symbol can be configured through `ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING` for the case where no remote is available.
 `ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING` can be set independently of `ZSH_GIT_PROMPT_SHOW_UPSTREAM`.
 
-### Show number of stash entries
-The number of stash entries will be shown if `ZSH_GIT_PROMPT_SHOW_STASH` is set.
+### Show stash entries
+If `ZSH_GIT_PROMPT_SHOW_STASH` is set, the prompt will display a symbol and the number of stash entries when there are entries in the stash.
 On Git versions older than 2.35.0 this will execute another Git command every time a new prompt is shown!
 To enable stash entries add the following line to your `.zshrc`:
 
 ```bash
 ZSH_GIT_PROMPT_SHOW_STASH=1
 ```
+
+### Disable display of numbers
+By default, the prompt will show counts for each item in the tracking status and local status sections (see [Prompt Structure](#prompt-structure) for details about these sections).
+However, you can disable the display of counts for either or both sections of the prompt using `ZSH_GIT_PROMPT_SHOW_TRACKING_COUNTS` and `ZSH_GIT_PROMPT_SHOW_LOCAL_COUNTS`.
+If you unset these variables or set them to `0`, then only the symbols will be shown but not the counts.
+For example, a prompt such as `[master|✚2]` will become `[master|✚]` instead.
 
 ### Force blank
 Since the prompt is asynchronous by default, the Git status updates slightly delayed.
