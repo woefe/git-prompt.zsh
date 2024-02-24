@@ -39,12 +39,12 @@ Load this example: `source examples/bashgitprompt.zsh`
 
 
 ### Compact
-
+Compact prompt without counts.
 
 Load this example: `source examples/compact.zsh`
 
 ```
-..e/hello_world master↑1|●1✚1…2❯
+..space/hello_world master↑|●✚…❯
 ```
 
 
