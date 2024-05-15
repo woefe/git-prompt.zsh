@@ -57,6 +57,9 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""}"
 : "${ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"}"
 : "${ZSH_THEME_GIT_PROMPT_COMMITID="%{$fg[yellow]%}⚑"}"
+: "${ZSH_THEME_GIT_PROMPT_COMMITID_PREFIX="%{$fg_bold[yellow]%}"}"
+: "${ZSH_THEME_GIT_PROMPT_COMMITID_SUFFIX="%{reset_color%}"}"
+: "${ZSH_THEME_GIT_PROMPT_COMMITID_LENGTH="10"}"
 
 # Disable promptinit if it is loaded
 (( $+functions[promptinit] )) && {promptinit; prompt off}
@@ -119,6 +122,9 @@ function _zsh_git_prompt_git_status() {
         -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
         -v SHOW_STASH="$ZSH_GIT_PROMPT_SHOW_STASH" \
         -v COMMITID="$ZSH_THEME_GIT_PROMPT_COMMITID" \
+        -v COMMITID_PREFIX="$ZSH_THEME_GIT_PROMPT_COMMITID_PREFIX" \
+        -v COMMITID_SUFFIX="$ZSH_THEME_GIT_PROMPT_COMMITID_SUFFIX" \
+        -v COMMITID_LENGTH="$ZSH_THEME_GIT_PROMPT_COMMITID_LENGTH" \
         -v SHOW_COMMITID="$ZSH_GIT_PROMPT_SHOW_COMMITID" \
         -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
         -v RC="%{$reset_color%}" \
@@ -230,7 +236,7 @@ function _zsh_git_prompt_git_status() {
                 }
 
                 if (SHOW_COMMITID) {
-                    local_element(COMMITID, substr(oid, 0, 10));
+                    prompt_element(COMMITID_PREFIX, substr(oid, 0, COMMITID_LENGTH), COMMITID_SUFFIX);
                 }
 
                 tracking_element(BEHIND, behind * -1);
