@@ -30,6 +30,7 @@ autoload -U colors && colors
 : "${ZSH_GIT_PROMPT_NO_ASYNC=""}"
 : "${ZSH_GIT_PROMPT_FORCE_BLANK=""}"
 : "${ZSH_GIT_PROMPT_AWK_CMD=""}"
+: "${ZSH_GIT_PROMPT_SHOW_COMMITID="1"}"
 
 # Theming
 : "${ZSH_THEME_GIT_PROMPT_PREFIX="["}"
@@ -55,6 +56,7 @@ autoload -U colors && colors
 : "${ZSH_THEME_GIT_PROMPT_TAGS_PREFIX="🏷 "}"
 : "${ZSH_THEME_GIT_PROMPT_TAGS_SUFFIX=""}"
 : "${ZSH_THEME_GIT_PROMPT_TAG="%{$fg_bold[magenta]%}"}"
+: "${ZSH_THEME_GIT_PROMPT_COMMITID="%{$fg[yellow]%}⚑"}"
 
 # Disable promptinit if it is loaded
 (( $+functions[promptinit] )) && {promptinit; prompt off}
@@ -116,6 +118,8 @@ function _zsh_git_prompt_git_status() {
         -v UNTRACKED="$ZSH_THEME_GIT_PROMPT_UNTRACKED" \
         -v STASHED="$ZSH_THEME_GIT_PROMPT_STASHED" \
         -v SHOW_STASH="$ZSH_GIT_PROMPT_SHOW_STASH" \
+        -v COMMITID="$ZSH_THEME_GIT_PROMPT_COMMITID" \
+        -v SHOW_COMMITID="$ZSH_GIT_PROMPT_SHOW_COMMITID" \
         -v CLEAN="$ZSH_THEME_GIT_PROMPT_CLEAN" \
         -v RC="%{$reset_color%}" \
         '
@@ -223,6 +227,10 @@ function _zsh_git_prompt_git_status() {
                     prompt_element(UPSTREAM_SYMBOL);
                 } else if (UPSTREAM_TYPE == "full") {
                     prompt_element(UPSTREAM_PREFIX, upstream, UPSTREAM_SUFFIX);
+                }
+
+                if (SHOW_COMMITID) {
+                    local_element(COMMITID, substr(oid, 0, 10));
                 }
 
                 tracking_element(BEHIND, behind * -1);
