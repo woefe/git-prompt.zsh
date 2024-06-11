@@ -75,7 +75,7 @@ setopt PROMPT_SUBST
 
 # Use --show-stash for git versions newer than 2.35.0
 _zsh_git_prompt_git_version=$(command git version)
-if [[ "${_zsh_git_prompt_git_version:12}" == 2.<35->.<-> ]]; then
+if [[ "${_zsh_git_prompt_git_version:12}" == 2.<35->.<->* ]]; then
     _zsh_git_prompt_git_cmd() {
         GIT_OPTIONAL_LOCKS=0 command git status --show-stash --branch --porcelain=v2 2>&1 \
             || echo "fatal: git command failed"
