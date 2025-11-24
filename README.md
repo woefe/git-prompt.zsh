@@ -39,10 +39,10 @@ Then source it in your `.zshrc`. For example:
 ```bash
 mkdir -p ~/.zsh
 git clone --depth=1 https://github.com/woefe/git-prompt.zsh ~/.zsh/git-prompt.zsh
-echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> .zshrc
+echo "source ~/.zsh/git-prompt.zsh/git-prompt.zsh" >> ~/.zshrc
 
 # Optional: install an example configuration
-echo "source ~/.zsh/git-prompt.zsh/examples/pure.zsh" >> .zshrc
+echo "source ~/.zsh/git-prompt.zsh/examples/pure.zsh" >> ~/.zshrc
 ```
 
 ### [Zplug](https://github.com/zplug/zplug)
