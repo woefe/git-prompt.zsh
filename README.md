@@ -57,12 +57,13 @@ or choose an example prompt with
 zplug "woefe/git-prompt.zsh", use:"{git-prompt.zsh,examples/multiline.zsh}"
 ```
 
-### [Zplugin](https://github.com/zdharma/zplugin)
+### [Zinit](https://github.com/zdharma-continuum/zinit)
+Add the following to your `.zshrc`:
 ```
-zplugin ice atload'!_zsh_git_prompt_precmd_hook' lucid
-zplugin load woefe/git-prompt.zsh
+# Installs the multiline example. Omit the `zinit ice ...` line to use the default config
+zinit ice src"examples/multiline.zsh"
+zinit load woefe/git-prompt.zsh
 ```
-Note that this method does not work if you want to disable the asynchronous rendering.
 
 ### Arch Linux
 Install [git-prompt.zsh](https://aur.archlinux.org/packages/git-prompt.zsh/) or [git-prompt.zsh-git](https://aur.archlinux.org/packages/git-prompt.zsh-git/) from the AUR.
