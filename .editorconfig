@@ -16,8 +16,11 @@ trim_trailing_whitespace = false
 [*.zsh]
 max_line_length = 99
 
+[*.yml]
+indent_size = 2
+
 [*.svg]
-insert_final_newline = dontcare
-indent_style = dontcare
-indent_size = dontcare
-trim_trailing_whitespace = dontcare
+insert_final_newline = unset
+indent_style = unset
+indent_size = unset
+trim_trailing_whitespace = unset
